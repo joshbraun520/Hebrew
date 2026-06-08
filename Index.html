@@ -1,0 +1,3063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ivrit · Hebrew for Israel</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===================== ROOT ===================== */
+:root {
+  --bg:       #070709;
+  --bg2:      #0d0d10;
+  --s1:       #131318;
+  --s2:       #1a1a20;
+  --s3:       #222228;
+  --b1:       #2a2a35;
+  --b2:       #38384a;
+  --b3:       #50506a;
+  --gold:     #d4a843;
+  --gold2:    #f0c96a;
+  --gold3:    #a07830;
+  --goldglow: rgba(212,168,67,.14);
+  --blue:     #6aadff;
+  --bluedim:  rgba(106,173,255,.1);
+  --green:    #52c48a;
+  --greendim: rgba(82,196,138,.1);
+  --red:      #e86060;
+  --reddim:   rgba(232,96,96,.1);
+  --amber:    #f59e0b;
+  --purple:   #a78bfa;
+  --purpledim:rgba(167,139,250,.1);
+  --text:     #e8e0d0;
+  --textd:    #8a8070;
+  --textm:    #4a4540;
+  --radius:   10px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Crimson Pro',serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ===================== SCREENS ===================== */
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+.fadeIn{animation:fadeUp .28s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===================== SCROLLBAR ===================== */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+
+/* ===================== BUTTONS ===================== */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  border-radius:6px;font-family:'JetBrains Mono',monospace;
+  font-size:11px;text-transform:uppercase;letter-spacing:1.2px;
+  padding:10px 22px;cursor:pointer;transition:all .18s;border:1px solid;
+  white-space:nowrap;
+}
+.btn-primary{background:var(--gold);border-color:var(--gold);color:#000;font-weight:600}
+.btn-primary:hover{background:var(--gold2);border-color:var(--gold2)}
+.btn-secondary{background:transparent;border-color:var(--b2);color:var(--textd)}
+.btn-secondary:hover{border-color:var(--gold3);color:var(--gold)}
+.btn-green{background:transparent;border-color:var(--green);color:var(--green)}
+.btn-green:hover{background:var(--green);color:#000}
+.btn-red{background:transparent;border-color:var(--red);color:var(--red)}
+.btn-red:hover{background:var(--red);color:#fff}
+.btn-ghost{background:transparent;border-color:transparent;color:var(--textd)}
+.btn-ghost:hover{color:var(--text);border-color:var(--b1)}
+.btn:disabled{opacity:.35;cursor:default}
+
+/* ===================== SPEAKER BTN ===================== */
+.spk{
+  background:none;border:1px solid var(--b1);color:var(--textm);
+  border-radius:50%;width:32px;height:32px;
+  display:inline-flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:14px;transition:all .18s;flex-shrink:0;
+}
+.spk:hover{border-color:var(--gold);color:var(--gold);background:var(--goldglow)}
+.spk.playing{border-color:var(--gold);color:var(--gold);background:var(--goldglow);animation:pring .9s ease infinite}
+.spk-lg{width:44px;height:44px;font-size:18px;border-radius:50%;background:none;border:1px solid var(--b1);color:var(--textm);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s}
+.spk-lg:hover{border-color:var(--gold);color:var(--gold);background:var(--goldglow)}
+.spk-lg.playing{border-color:var(--gold);color:var(--gold);background:var(--goldglow);animation:pring .9s ease infinite}
+@keyframes pring{0%{box-shadow:0 0 0 0 rgba(212,168,67,.5)}70%{box-shadow:0 0 0 8px rgba(212,168,67,0)}100%{box-shadow:0 0 0 0 rgba(212,168,67,0)}}
+
+/* back-btn */
+.back-btn{
+  background:none;border:1px solid var(--b1);color:var(--textd);
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  padding:7px 14px;border-radius:5px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:.8px;transition:all .18s;
+}
+.back-btn:hover{border-color:var(--gold3);color:var(--gold)}
+
+/* ===================== TAGS ===================== */
+.tag{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;
+}
+.tag-new{background:var(--bluedim);color:var(--blue);border:1px solid rgba(106,173,255,.2)}
+.tag-done{background:var(--greendim);color:var(--green);border:1px solid rgba(82,196,138,.2)}
+.tag-review{background:rgba(212,168,67,.1);color:var(--gold);border:1px solid var(--gold3)}
+.tag-mastered{background:var(--purpledim);color:var(--purple);border:1px solid rgba(167,139,250,.2)}
+.tag-locked{background:var(--s2);color:var(--textm);border:1px solid var(--b1)}
+
+/* ===================== HOME ===================== */
+#home{
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%,rgba(212,168,67,.1) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 90% 90%,rgba(106,173,255,.04) 0%,transparent 60%),
+    var(--bg);
+}
+.home-header{padding:52px 32px 0;text-align:center}
+.home-eyebrow{font-family:'Cinzel',serif;font-size:11px;letter-spacing:7px;color:var(--gold3);text-transform:uppercase;margin-bottom:22px}
+.home-heb{
+  font-size:clamp(64px,13vw,108px);color:var(--gold);line-height:1;
+  letter-spacing:6px;direction:rtl;
+  text-shadow:0 0 80px rgba(212,168,67,.25),0 0 30px rgba(212,168,67,.15);
+  margin-bottom:10px;
+}
+.home-en{
+  font-family:'Cinzel',serif;font-size:clamp(18px,3.5vw,28px);font-weight:400;
+  color:var(--textd);letter-spacing:10px;text-transform:uppercase;margin-bottom:14px;
+}
+.home-sub{font-size:19px;color:var(--textd);font-style:italic;font-weight:300;margin-bottom:40px}
+
+/* stats strip */
+.stats-strip{
+  display:flex;justify-content:center;gap:0;margin-bottom:48px;
+  border:1px solid var(--b1);border-radius:12px;overflow:hidden;
+  max-width:480px;margin-left:auto;margin-right:auto;margin-bottom:48px;
+}
+.stat-cell{
+  flex:1;padding:16px 12px;text-align:center;border-right:1px solid var(--b1);
+  transition:background .2s;
+}
+.stat-cell:last-child{border-right:none}
+.stat-cell:hover{background:var(--s1)}
+.stat-n{font-family:'Cinzel',serif;font-size:26px;color:var(--gold);display:block;line-height:1;margin-bottom:4px}
+.stat-l{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--textm);text-transform:uppercase;letter-spacing:1.5px}
+
+/* category grid */
+.cat-grid{
+  flex:1;padding:0 20px 56px;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+  gap:14px;max-width:1080px;margin:0 auto;width:100%;align-content:start;
+}
+.cat-card{
+  background:var(--s1);border:1px solid var(--b1);border-radius:14px;
+  padding:26px 24px;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;
+}
+.cat-card::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--goldglow) 0%,transparent 60%);
+  opacity:0;transition:opacity .22s;border-radius:inherit;
+}
+.cat-card:hover{border-color:var(--gold3);transform:translateY(-3px);box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.cat-card:hover::after{opacity:1}
+.cat-card.all-done{border-color:rgba(82,196,138,.3)}
+.cat-badge-done{
+  position:absolute;top:14px;right:14px;
+  background:var(--greendim);color:var(--green);
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  padding:3px 9px;border-radius:20px;border:1px solid rgba(82,196,138,.2);
+  text-transform:uppercase;letter-spacing:.5px;display:none;
+}
+.cat-card.all-done .cat-badge-done{display:block}
+.cat-icon{font-size:34px;display:block;margin-bottom:12px;line-height:1}
+.cat-title{font-family:'Cinzel',serif;font-size:15px;font-weight:600;margin-bottom:6px;letter-spacing:.3px}
+.cat-desc{font-size:14px;color:var(--textd);line-height:1.55;font-style:italic;margin-bottom:18px}
+.cat-footer{display:flex;align-items:center;justify-content:space-between}
+.cat-count{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--textm);text-transform:uppercase;letter-spacing:.8px}
+.cat-pbar{width:72px;height:3px;background:var(--b1);border-radius:2px;overflow:hidden}
+.cat-pfill{height:100%;background:var(--gold);border-radius:2px;transition:width .4s ease}
+
+/* home nav pills */
+.home-nav-pills {
+  display:flex;gap:10px;justify-content:center;
+  margin-bottom:36px;flex-wrap:wrap;padding:0 20px;
+}
+
+/* home quick-review banner */
+.review-banner{
+  max-width:1080px;margin:0 auto 16px;width:100%;padding:0 20px;
+}
+.review-banner-inner{
+  background:linear-gradient(135deg,rgba(212,168,67,.08),rgba(167,139,250,.06));
+  border:1px solid var(--gold3);border-radius:12px;
+  padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  flex-wrap:wrap;
+}
+.rb-text h3{font-family:'Cinzel',serif;font-size:15px;color:var(--gold);margin-bottom:3px}
+.rb-text p{font-size:13px;color:var(--textd);font-style:italic}
+#review-banner{display:none}
+
+/* ===================== CATEGORY SCREEN ===================== */
+#category-screen{background:var(--bg)}
+.std-header{
+  padding:22px 24px 18px;border-bottom:1px solid var(--b1);
+  position:sticky;top:0;background:rgba(7,7,9,.96);
+  backdrop-filter:blur(14px);z-index:50;
+}
+.std-header-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.std-header-info h1{font-family:'Cinzel',serif;font-size:22px;color:var(--gold);margin-bottom:3px}
+.std-header-info p{font-size:15px;color:var(--textd);font-style:italic}
+
+.lessons-list{padding:20px 24px 80px;display:flex;flex-direction:column;gap:10px;max-width:700px;margin:0 auto;width:100%}
+.lesson-row{
+  background:var(--s1);border:1px solid var(--b1);border-radius:10px;
+  padding:18px 22px;cursor:pointer;transition:all .2s;
+  display:grid;grid-template-columns:46px 1fr auto;align-items:center;gap:14px;
+}
+.lesson-row:hover{border-color:var(--gold3);background:var(--s2)}
+.lesson-row.done{border-color:rgba(82,196,138,.25)}
+.lesson-row.locked{opacity:.38;cursor:not-allowed}
+.lesson-row.locked:hover{border-color:var(--b1);background:var(--s1)}
+.lesson-num{
+  width:46px;height:46px;border-radius:50%;border:2px solid var(--b2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cinzel',serif;font-size:15px;color:var(--textd);flex-shrink:0;transition:all .2s;
+}
+.lesson-row:hover .lesson-num{border-color:var(--gold3);color:var(--gold)}
+.lesson-row.done .lesson-num{border-color:var(--green);color:var(--green);background:var(--greendim)}
+.lesson-info-title{font-family:'Cinzel',serif;font-size:14px;margin-bottom:4px}
+.lesson-info-desc{font-size:13px;color:var(--textd);font-style:italic}
+/* mastery indicator per lesson */
+.lesson-mastery-dots{display:flex;gap:3px;margin-top:5px}
+.mdot{width:6px;height:6px;border-radius:50%;background:var(--b2)}
+.mdot.known{background:var(--green)}
+.mdot.weak{background:var(--red)}
+.mdot.mid{background:var(--amber)}
+
+/* ===================== LESSON SCREEN ===================== */
+#lesson-screen{background:var(--bg)}
+.lesson-header{
+  padding:14px 20px;border-bottom:1px solid var(--b1);
+  position:sticky;top:0;background:rgba(7,7,9,.96);
+  backdrop-filter:blur(14px);z-index:50;
+  display:flex;align-items:center;gap:14px;
+}
+.lesson-title-area{flex:1}
+.lesson-breadcrumb{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--textm);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:2px}
+.lesson-title-area h2{font-family:'Cinzel',serif;font-size:16px}
+.lp-row{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--textm)}
+.lp-bar{width:90px;height:3px;background:var(--b1);border-radius:2px;overflow:hidden}
+.lp-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .4s ease}
+
+/* phase tabs */
+.phase-tabs{display:flex;border-bottom:1px solid var(--b1);padding:0 20px;gap:0;overflow-x:auto}
+.phase-tab{
+  font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;
+  letter-spacing:1.5px;padding:11px 18px;cursor:pointer;color:var(--textm);
+  border-bottom:2px solid transparent;transition:all .18s;background:none;
+  border-top:none;border-left:none;border-right:none;white-space:nowrap;
+}
+.phase-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.phase-tab.tab-done{color:var(--green)}
+.phase-content{flex:1;overflow-y:auto}
+.phase-pane{display:none}
+.phase-pane.active{display:block}
+
+/* ===================== LEARN PHASE ===================== */
+.learn-wrap{padding:24px 20px 100px;max-width:660px;margin:0 auto;width:100%}
+.learn-group-label{
+  font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;
+  letter-spacing:2px;color:var(--gold3);padding:20px 0 8px;
+}
+.learn-group-label:first-child{padding-top:0}
+
+.word-card{
+  background:var(--s1);border:1px solid var(--b1);
+  padding:0;overflow:hidden;position:relative;
+  transition:border-color .2s;
+}
+.word-card:first-of-type,.word-card:first-child+.word-card{border-radius:10px 10px 0 0}
+.word-card + .word-card{border-top:none;border-radius:0}
+.word-card:last-child{border-radius:0 0 10px 10px}
+.word-card:only-child,.word-card:first-child:last-child{border-radius:10px}
+.word-card:hover{border-color:var(--b2)}
+
+.wc-main{
+  display:grid;grid-template-columns:1fr auto auto;
+  align-items:center;gap:14px;padding:18px 20px;cursor:pointer;
+}
+.wc-en{font-size:16px;font-weight:400;color:var(--text)}
+.wc-heb{font-size:28px;color:var(--gold);direction:rtl;letter-spacing:1px;font-weight:500;text-align:center;min-width:100px}
+.wc-ph{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--blue);text-align:right}
+
+/* mastery badge per word */
+.wc-mastery{
+  position:absolute;top:10px;right:10px;
+  font-family:'JetBrains Mono',monospace;font-size:8px;
+  padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;
+  display:none;
+}
+.wc-mastery.show{display:block}
+.wc-mastery.mastered{background:var(--purpledim);color:var(--purple);border:1px solid rgba(167,139,250,.2)}
+.wc-mastery.known{background:var(--greendim);color:var(--green);border:1px solid rgba(82,196,138,.2)}
+.wc-mastery.weak{background:var(--reddim);color:var(--red);border:1px solid rgba(232,96,96,.2)}
+
+.wc-note{
+  border-top:1px solid var(--b1);padding:10px 20px;
+  font-size:13px;color:var(--textd);font-style:italic;line-height:1.55;
+  display:none;
+}
+.word-card.expanded .wc-note{display:block}
+
+/* learn footer */
+.learn-footer{
+  position:sticky;bottom:0;background:rgba(7,7,9,.95);
+  backdrop-filter:blur(12px);border-top:1px solid var(--b1);
+  padding:14px 20px;display:flex;align-items:center;justify-content:space-between;
+}
+.lf-info{font-size:13px;color:var(--textd);font-style:italic}
+
+/* ===================== FLASHCARD PHASE ===================== */
+.fc-wrap-outer{
+  padding:32px 20px 100px;max-width:560px;margin:0 auto;width:100%;
+  display:flex;flex-direction:column;align-items:center;gap:24px;
+}
+
+/* Stats row */
+.fc-stats{display:flex;gap:0;border:1px solid var(--b1);border-radius:10px;overflow:hidden;width:100%}
+.fc-stat{flex:1;text-align:center;padding:12px 8px;border-right:1px solid var(--b1)}
+.fc-stat:last-child{border-right:none}
+.fc-stat-n{font-family:'Cinzel',serif;font-size:22px;display:block;line-height:1;margin-bottom:3px}
+.fc-stat-l{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--textm);text-transform:uppercase;letter-spacing:1px}
+.s-green{color:var(--green)} .s-red{color:var(--red)} .s-gold{color:var(--gold)} .s-blue{color:var(--blue)} .s-purple{color:var(--purple)}
+
+.fc-progress-row{width:100%;display:flex;flex-direction:column;gap:5px}
+.fc-prog-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--textm);text-transform:uppercase;letter-spacing:1px;text-align:center}
+.fc-prog-bar{width:100%;height:4px;background:var(--b1);border-radius:2px;overflow:hidden}
+.fc-prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));border-radius:2px;transition:width .4s ease}
+
+/* The card itself */
+.fc-card-scene{
+  width:100%;height:250px;perspective:1200px;cursor:pointer;
+  user-select:none;-webkit-user-select:none;
+}
+.fc-card-inner{
+  width:100%;height:100%;position:relative;
+  transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1);
+}
+.fc-card-scene.show-front .fc-card-inner{transform:rotateY(0deg)}
+.fc-card-scene.show-back .fc-card-inner{transform:rotateY(180deg)}
+
+.fc-face{
+  position:absolute;inset:0;border-radius:16px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  backface-visibility:hidden;gap:10px;padding:28px 24px;
+}
+.fc-front{background:var(--s1);border:1px solid var(--b1)}
+.fc-front.show-back-side{background:var(--s2);border-color:var(--gold3)}
+.fc-back{
+  background:var(--s2);border:1px solid var(--gold3);
+  transform:rotateY(180deg);
+}
+.fc-face-label{
+  font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;
+  letter-spacing:2px;color:var(--textm);position:absolute;top:16px;
+}
+.fc-word-en{font-family:'Cinzel',serif;font-size:26px;text-align:center;line-height:1.2}
+.fc-word-heb{font-size:46px;color:var(--gold);direction:rtl;text-align:center;line-height:1.2}
+.fc-word-ph{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--blue)}
+.fc-word-note{font-size:13px;color:var(--textd);font-style:italic;text-align:center;max-width:320px;line-height:1.5}
+
+/* flip controls */
+.fc-controls{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%}
+.fc-btn-row{display:flex;gap:10px;justify-content:center;width:100%;flex-wrap:wrap}
+.fc-hint-text{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--textm);text-transform:uppercase;letter-spacing:1px;text-align:center}
+
+/* speed tag shown during flashcards */
+.speed-badge{
+  font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 8px;border-radius:20px;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.speed-fast{background:var(--purpledim);color:var(--purple);border:1px solid rgba(167,139,250,.2)}
+.speed-normal{background:var(--greendim);color:var(--green);border:1px solid rgba(82,196,138,.2)}
+.speed-slow{background:var(--reddim);color:var(--red);border:1px solid rgba(232,96,96,.2)}
+
+/* ===================== QUIZ PHASE ===================== */
+.quiz-wrap{padding:28px 20px 80px;max-width:600px;margin:0 auto;width:100%}
+.quiz-topbar{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--textm);
+}
+.quiz-qnum{color:var(--textd)}
+.quiz-streak{color:var(--gold);display:flex;align-items:center;gap:4px}
+
+.quiz-q-card{
+  background:var(--s1);border:1px solid var(--b1);border-radius:14px;
+  padding:36px 28px;text-align:center;margin-bottom:18px;position:relative;
+}
+.quiz-dir-label{
+  font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;
+  letter-spacing:2px;color:var(--textm);margin-bottom:18px;
+}
+.quiz-word-heb{font-size:52px;color:var(--gold);direction:rtl;line-height:1.2;margin-bottom:6px}
+.quiz-word-en{font-family:'Cinzel',serif;font-size:30px;color:var(--text);margin-bottom:6px}
+.quiz-timer-bar-wrap{margin-top:14px}
+.quiz-timer-track{width:100%;height:3px;background:var(--b1);border-radius:2px;overflow:hidden}
+.quiz-timer-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .1s linear}
+
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.quiz-opt{
+  background:var(--s1);border:1px solid var(--b1);border-radius:8px;
+  padding:14px 16px;font-size:15px;cursor:pointer;
+  transition:all .15s;text-align:left;color:var(--text);
+  font-family:'Crimson Pro',serif;line-height:1.3;
+}
+.quiz-opt:hover:not(:disabled){border-color:var(--gold3);background:var(--s2)}
+.quiz-opt.correct{border-color:var(--green);background:var(--greendim);color:var(--green)}
+.quiz-opt.wrong{border-color:var(--red);background:var(--reddim);color:var(--red)}
+.quiz-opt:disabled{cursor:default}
+
+.quiz-fb{
+  border-radius:8px;padding:13px 18px;font-size:15px;
+  display:none;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;
+}
+.quiz-fb.show{display:flex}
+.quiz-fb.good{background:var(--greendim);border:1px solid rgba(82,196,138,.25);color:var(--green)}
+.quiz-fb.bad{background:var(--reddim);border:1px solid rgba(232,96,96,.25);color:var(--red)}
+.quiz-fb em{font-style:italic;color:var(--textd);font-size:14px}
+
+/* ===================== COMPLETE SCREEN ===================== */
+.complete-overlay{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(7,7,9,.97);backdrop-filter:blur(16px);
+  flex-direction:column;align-items:center;justify-content:center;
+  padding:40px 24px;text-align:center;gap:18px;overflow-y:auto;
+}
+.complete-overlay.show{display:flex}
+.complete-trophy{font-size:72px;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
+.complete-title{font-family:'Cinzel',serif;font-size:30px;color:var(--gold)}
+.complete-sub{font-size:17px;color:var(--textd);font-style:italic;max-width:380px;line-height:1.5}
+.complete-stats{display:flex;gap:0;border:1px solid var(--b1);border-radius:12px;overflow:hidden;margin:8px 0}
+.c-stat{padding:16px 24px;text-align:center;border-right:1px solid var(--b1)}
+.c-stat:last-child{border-right:none}
+.c-stat-n{font-family:'Cinzel',serif;font-size:30px;display:block;margin-bottom:4px}
+.c-stat-l{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--textm);text-transform:uppercase;letter-spacing:1px}
+
+/* weak words list in complete */
+.weak-words-section{max-width:400px;width:100%;text-align:left}
+.weak-words-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--textm);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
+.weak-word-chip{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--reddim);border:1px solid rgba(232,96,96,.2);
+  border-radius:6px;padding:6px 12px;margin:3px;cursor:pointer;
+  font-size:14px;color:var(--text);transition:all .15s;
+}
+.weak-word-chip:hover{background:rgba(232,96,96,.15)}
+.weak-word-heb{color:var(--gold);font-size:18px;direction:rtl}
+.complete-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+
+/* ===================== REVIEW SCREEN ===================== */
+#review-screen{background:var(--bg)}
+.review-wrap{padding:24px 20px 80px;max-width:780px;margin:0 auto;width:100%}
+
+/* Word performance table */
+.perf-section-title{font-family:'Cinzel',serif;font-size:20px;color:var(--gold);margin-bottom:6px}
+.perf-section-sub{font-size:14px;color:var(--textd);font-style:italic;margin-bottom:20px}
+.perf-filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.pf-btn{
+  background:var(--s2);border:1px solid var(--b1);border-radius:5px;
+  font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;
+  letter-spacing:.8px;padding:6px 14px;cursor:pointer;color:var(--textd);transition:all .18s;
+}
+.pf-btn.active{background:var(--gold);border-color:var(--gold);color:#000;font-weight:600}
+
+.perf-table{width:100%;border-collapse:collapse;font-size:14px}
+.perf-table th{
+  font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;
+  letter-spacing:1.2px;color:var(--textm);text-align:left;padding:8px 12px;
+  border-bottom:1px solid var(--b1);
+}
+.perf-table td{padding:10px 12px;border-bottom:1px solid var(--b1)}
+.perf-table tr:hover td{background:var(--s1)}
+.pt-heb{font-size:20px;color:var(--gold);direction:rtl}
+.pt-en{color:var(--text)}
+.pt-ph{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue)}
+.pt-acc{font-family:'JetBrains Mono',monospace;font-size:12px}
+.pt-acc.high{color:var(--green)}
+.pt-acc.mid{color:var(--amber)}
+.pt-acc.low{color:var(--red)}
+.pt-speed{font-family:'JetBrains Mono',monospace;font-size:11px}
+.pt-attempts{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--textm)}
+.pt-last{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--textm)}
+.pt-spk{padding:6px 12px}
+
+/* overall progress chart */
+.progress-chart-section{margin-top:36px}
+.prog-bars{display:flex;flex-direction:column;gap:8px}
+.prog-row{display:grid;grid-template-columns:140px 1fr 48px;align-items:center;gap:12px}
+.prog-label{font-size:13px;color:var(--textd);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prog-bar-outer{background:var(--b1);border-radius:3px;height:8px;overflow:hidden}
+.prog-bar-inner{height:100%;border-radius:3px;transition:width .5s ease}
+.prog-pct{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--textd);text-align:right}
+
+/* due-for-review section */
+.due-section{margin-top:32px}
+.due-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.due-chip{
+  display:flex;align-items:center;gap:10px;
+  background:var(--s1);border:1px solid var(--b1);border-radius:8px;
+  padding:8px 14px;cursor:pointer;transition:all .18s;
+}
+.due-chip:hover{border-color:var(--gold3);background:var(--s2)}
+.due-chip-heb{font-size:20px;color:var(--gold);direction:rtl}
+.due-chip-en{font-size:13px;color:var(--textd)}
+.due-chip-badge{font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 7px;border-radius:20px;text-transform:uppercase}
+
+/* ===================== ALPHABET MODAL ===================== */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.82);backdrop-filter:blur(10px);
+  z-index:300;align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.open{display:flex}
+.modal-box{
+  background:var(--s1);border:1px solid var(--b1);border-radius:16px;
+  padding:28px;max-width:580px;width:100%;max-height:82vh;overflow-y:auto;
+}
+.modal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.modal-title{font-family:'Cinzel',serif;font-size:20px;color:var(--gold)}
+.modal-x{
+  background:none;border:1px solid var(--b1);color:var(--textd);
+  width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:14px;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.modal-x:hover{border-color:var(--red);color:var(--red)}
+.aleph-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:6px;margin-bottom:16px}
+.aleph-cell{
+  background:var(--s2);border:1px solid var(--b1);border-radius:8px;
+  padding:10px 6px;text-align:center;cursor:pointer;transition:all .18s;
+}
+.aleph-cell:hover,.aleph-cell.sel{border-color:var(--gold3);background:var(--goldglow)}
+.aleph-char{font-size:26px;color:var(--gold);display:block;direction:rtl}
+.aleph-name{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--textm);margin-top:3px}
+.aleph-detail{
+  background:var(--s2);border:1px solid var(--gold3);border-radius:10px;
+  padding:18px 22px;display:none;
+}
+.aleph-detail.open{display:block}
+.ad-char{font-size:64px;color:var(--gold);direction:rtl;line-height:1;margin-bottom:8px}
+.ad-name{font-family:'Cinzel',serif;font-size:18px;margin-bottom:6px}
+.ad-sound{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--blue);margin-bottom:8px}
+.ad-desc{font-size:14px;color:var(--textd);line-height:1.65}
+
+/* ===================== FAB ===================== */
+.fab-group{position:fixed;bottom:22px;right:22px;display:flex;flex-direction:column;gap:9px;z-index:100}
+.fab{
+  background:var(--s2);border:1px solid var(--b2);color:var(--textd);
+  border-radius:50%;width:44px;height:44px;display:flex;align-items:center;
+  justify-content:center;cursor:pointer;font-size:17px;transition:all .18s;
+  box-shadow:0 4px 20px rgba(0,0,0,.5);
+}
+.fab:hover{border-color:var(--gold3);color:var(--gold);background:var(--s3)}
+.fab.fab-review{background:rgba(212,168,67,.08);border-color:var(--gold3);color:var(--gold)}
+
+/* ===================== MISC ===================== */
+.divider{border:none;border-top:1px solid var(--b1);margin:20px 0}
+.no-voice-banner{
+  background:var(--bluedim);border:1px solid rgba(106,173,255,.2);
+  border-radius:8px;padding:10px 16px;font-size:13px;color:var(--blue);
+  display:none;margin-bottom:16px;
+}
+.no-voice-banner.show{display:block}
+.empty-state{text-align:center;padding:40px 20px;color:var(--textm);font-style:italic;font-size:15px}
+
+/* ===================== PRACTICE HUB ===================== */
+#practice-screen {
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 20%, rgba(167,139,250,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(212,168,67,.06) 0%, transparent 60%),
+    var(--bg);
+}
+.ph-header{
+  padding:44px 32px 0;text-align:center;
+}
+.ph-eyebrow{
+  font-family:'Cinzel',serif;font-size:11px;letter-spacing:6px;
+  color:var(--gold3);text-transform:uppercase;margin-bottom:18px;
+}
+.ph-title{
+  font-family:'Cinzel',serif;font-size:clamp(28px,6vw,48px);
+  color:var(--text);margin-bottom:10px;
+}
+.ph-title span{color:var(--gold)}
+.ph-sub{font-size:17px;color:var(--textd);font-style:italic;font-weight:300;margin-bottom:48px}
+
+/* mode cards grid */
+.ph-modes{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:16px;max-width:1000px;margin:0 auto;padding:0 20px 60px;
+  align-content:start;
+}
+.mode-card{
+  background:var(--s1);border:1px solid var(--b1);border-radius:16px;
+  padding:28px 26px;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;
+}
+.mode-card::before{
+  content:'';position:absolute;inset:0;opacity:0;transition:opacity .22s;border-radius:inherit;
+}
+.mode-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.mode-card:hover::before{opacity:1}
+
+/* colour variants */
+.mode-card.mode-blitz{border-color:rgba(212,168,67,.25)}
+.mode-card.mode-blitz::before{background:linear-gradient(135deg,rgba(212,168,67,.09),transparent 60%)}
+.mode-card.mode-blitz:hover{border-color:var(--gold3)}
+.mode-card.mode-blitz .mc-icon{color:var(--gold)}
+.mode-card.mode-blitz .mc-start{border-color:var(--gold);color:var(--gold)}
+.mode-card.mode-blitz .mc-start:hover{background:var(--gold);color:#000}
+
+.mode-card.mode-weak{border-color:rgba(232,96,96,.25)}
+.mode-card.mode-weak::before{background:linear-gradient(135deg,rgba(232,96,96,.09),transparent 60%)}
+.mode-card.mode-weak:hover{border-color:rgba(232,96,96,.4)}
+.mode-card.mode-weak .mc-icon{color:var(--red)}
+.mode-card.mode-weak .mc-start{border-color:var(--red);color:var(--red)}
+.mode-card.mode-weak .mc-start:hover{background:var(--red);color:#fff}
+
+.mode-card.mode-quick{border-color:rgba(106,173,255,.25)}
+.mode-card.mode-quick::before{background:linear-gradient(135deg,rgba(106,173,255,.09),transparent 60%)}
+.mode-card.mode-quick:hover{border-color:rgba(106,173,255,.4)}
+.mode-card.mode-quick .mc-icon{color:var(--blue)}
+.mode-card.mode-quick .mc-start{border-color:var(--blue);color:var(--blue)}
+.mode-card.mode-quick .mc-start:hover{background:var(--blue);color:#000}
+
+.mode-card.mode-cats{border-color:rgba(82,196,138,.25)}
+.mode-card.mode-cats::before{background:linear-gradient(135deg,rgba(82,196,138,.09),transparent 60%)}
+.mode-card.mode-cats:hover{border-color:rgba(82,196,138,.4)}
+.mode-card.mode-cats .mc-icon{color:var(--green)}
+.mode-card.mode-cats .mc-start{border-color:var(--green);color:var(--green)}
+.mode-card.mode-cats .mc-start:hover{background:var(--green);color:#000}
+
+.mc-icon{font-size:38px;display:block;margin-bottom:14px;line-height:1}
+.mc-title{font-family:'Cinzel',serif;font-size:17px;font-weight:600;margin-bottom:7px}
+.mc-desc{font-size:14px;color:var(--textd);line-height:1.6;font-style:italic;margin-bottom:18px}
+.mc-meta{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:18px;flex-wrap:wrap;gap:8px;
+}
+.mc-pill{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  padding:3px 10px;border-radius:20px;background:var(--s2);
+  border:1px solid var(--b2);color:var(--textd);text-transform:uppercase;letter-spacing:.5px;
+}
+.mc-start{
+  display:inline-flex;align-items:center;gap:6px;
+  background:transparent;border:1px solid;border-radius:6px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;
+  letter-spacing:1px;padding:9px 20px;cursor:pointer;transition:all .18s;
+}
+
+/* quick-fire time picker */
+.qf-times{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.qf-t{
+  background:var(--s2);border:1px solid var(--b2);border-radius:6px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;
+  letter-spacing:.8px;padding:7px 14px;cursor:pointer;color:var(--textd);
+  transition:all .18s;
+}
+.qf-t.sel{background:var(--blue);border-color:var(--blue);color:#000;font-weight:600}
+
+/* category filter for "by category" mode */
+.cat-filter-grid{
+  display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;
+}
+.cf-btn{
+  background:var(--s2);border:1px solid var(--b1);border-radius:6px;
+  font-family:'Crimson Pro',serif;font-size:13px;
+  padding:6px 14px;cursor:pointer;color:var(--textd);transition:all .18s;
+}
+.cf-btn.sel{background:rgba(82,196,138,.12);border-color:rgba(82,196,138,.4);color:var(--green)}
+
+/* ── PRACTICE SESSION SCREEN ── */
+#practice-session-screen{background:var(--bg)}
+.ps-header{
+  padding:16px 20px;border-bottom:1px solid var(--b1);
+  position:sticky;top:0;background:rgba(7,7,9,.96);
+  backdrop-filter:blur(14px);z-index:50;
+  display:flex;align-items:center;gap:14px;
+}
+.ps-title-area{flex:1}
+.ps-mode-label{
+  font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;
+  letter-spacing:1.5px;color:var(--textm);margin-bottom:2px;
+}
+.ps-title-area h2{font-family:'Cinzel',serif;font-size:16px}
+.ps-timer{
+  font-family:'JetBrains Mono',monospace;font-size:20px;color:var(--gold);
+  min-width:48px;text-align:right;
+}
+.ps-timer.urgent{color:var(--red);animation:tick .5s ease infinite alternate}
+@keyframes tick{from{opacity:1}to{opacity:.5}}
+
+/* session tabs — just flash and quiz, no learn */
+.ps-tabs{display:flex;border-bottom:1px solid var(--b1);padding:0 20px;gap:0}
+.ps-tab{
+  font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;
+  letter-spacing:1.5px;padding:11px 18px;cursor:pointer;color:var(--textm);
+  border-bottom:2px solid transparent;transition:all .18s;background:none;
+  border-top:none;border-left:none;border-right:none;white-space:nowrap;
+}
+.ps-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.ps-tab.tab-done{color:var(--green)}
+
+/* reuse phase-content, phase-pane for session content */
+
+/* session complete */
+.sc-wrap{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:48px 24px;text-align:center;gap:16px;flex:1;
+}
+.sc-trophy{font-size:64px;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+.sc-mode-badge{
+  font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;
+  letter-spacing:1.5px;padding:4px 12px;border-radius:20px;
+  background:var(--goldglow);border:1px solid var(--gold3);color:var(--gold);
+}
+.sc-title{font-family:'Cinzel',serif;font-size:28px;color:var(--gold)}
+.sc-sub{font-size:16px;color:var(--textd);font-style:italic;max-width:400px;line-height:1.6}
+.sc-stats{display:flex;gap:0;border:1px solid var(--b1);border-radius:12px;overflow:hidden;margin:6px 0}
+.sc-stat{padding:14px 22px;text-align:center;border-right:1px solid var(--b1)}
+.sc-stat:last-child{border-right:none}
+.sc-stat-n{font-family:'Cinzel',serif;font-size:28px;display:block;margin-bottom:3px}
+.sc-stat-l{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--textm);text-transform:uppercase;letter-spacing:1px}
+.sc-weak-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--textm);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;align-self:flex-start;max-width:480px;width:100%}
+.sc-weak-chips{display:flex;flex-wrap:wrap;gap:8px;max-width:480px;width:100%}
+.sc-chip{
+  display:flex;align-items:center;gap:8px;
+  background:var(--reddim);border:1px solid rgba(232,96,96,.2);
+  border-radius:6px;padding:6px 12px;cursor:pointer;
+  font-size:13px;color:var(--text);transition:all .15s;
+}
+.sc-chip:hover{background:rgba(232,96,96,.15)}
+.sc-chip-heb{color:var(--gold);font-size:17px;direction:rtl}
+.sc-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+/* ===================== MOBILE — iPhone ===================== */
+@media (max-width: 480px) {
+
+  /* ── Global ── */
+  html, body { overflow-x: hidden; max-width: 100vw; }
+  .screen { min-height: 100svh; }
+
+  /* ── Home ── */
+  .home-header { padding: 36px 16px 0; }
+  .home-eyebrow { font-size: 9px; letter-spacing: 4px; }
+  .home-heb { font-size: 68px; letter-spacing: 2px; }
+  .home-en { font-size: 16px; letter-spacing: 5px; }
+  .home-sub { font-size: 15px; margin-bottom: 24px; }
+
+  .stats-strip {
+    margin-left: 16px; margin-right: 16px; margin-bottom: 20px;
+    max-width: calc(100vw - 32px);
+  }
+  .stat-cell { padding: 12px 6px; }
+  .stat-n { font-size: 20px; }
+  .stat-l { font-size: 8px; letter-spacing: .5px; }
+
+  /* home nav pills — stack vertically */
+  .home-nav-pills {
+    flex-direction: column; align-items: stretch;
+    padding: 0 16px; gap: 8px; margin-bottom: 24px;
+  }
+  .home-nav-pills .btn { justify-content: center; font-size: 13px; padding: 12px 16px; }
+
+  .review-banner { padding: 0 16px; }
+  .review-banner-inner { flex-direction: column; gap: 10px; padding: 14px 16px; }
+  .rb-text h3 { font-size: 13px; }
+  .rb-text p { font-size: 12px; }
+
+  .cat-grid {
+    grid-template-columns: 1fr;
+    padding: 0 16px 80px;
+    gap: 10px;
+  }
+  .cat-card { padding: 20px 18px; }
+
+  /* ── Category screen ── */
+  .std-header { padding: 16px 16px 12px; }
+  .std-header-top { gap: 10px; }
+  .std-header-info h1 { font-size: 17px; }
+  .std-header-info p { font-size: 13px; }
+  .lessons-list { padding: 14px 16px 80px; }
+  .lesson-row {
+    padding: 14px 14px;
+    grid-template-columns: 38px 1fr auto;
+    gap: 10px;
+  }
+  .lesson-num { width: 38px; height: 38px; font-size: 13px; }
+  .lesson-info-title { font-size: 13px; }
+  .lesson-info-desc { font-size: 12px; }
+  .tag { font-size: 9px; padding: 3px 8px; flex-shrink: 0; }
+
+  /* ── Lesson header ── */
+  .lesson-header { padding: 10px 12px; gap: 8px; flex-wrap: nowrap; }
+  .lesson-breadcrumb { display: none; }
+  .lesson-title-area h2 { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lp-bar { width: 60px; }
+  .lp-row { gap: 5px; font-size: 9px; }
+  #lp-pct { display: none; }
+
+  /* ── Phase tabs ── */
+  .phase-tabs, .ps-tabs {
+    padding: 0 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .phase-tabs::-webkit-scrollbar,
+  .ps-tabs::-webkit-scrollbar { display: none; }
+  .phase-tab, .ps-tab {
+    font-size: 9px;
+    letter-spacing: .8px;
+    padding: 10px 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── Learn phase ── */
+  .learn-wrap { padding: 16px 12px 90px; }
+  .wc-main {
+    /* Stack: English top, Hebrew middle-left, speaker right spanning both, phonetic below */
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto;
+    gap: 4px 10px;
+    padding: 14px 14px;
+  }
+  .wc-en {
+    grid-column: 1 / 2;
+    grid-row: 1;
+    font-size: 15px;
+  }
+  .wc-heb {
+    grid-column: 1 / 2;
+    grid-row: 2;
+    font-size: 26px;
+    min-width: unset;
+    text-align: left;
+  }
+  .spk {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+    width: 36px; height: 36px;
+  }
+  .wc-ph {
+    grid-column: 1 / 3;
+    grid-row: 3;
+    font-size: 11px;
+    text-align: left;
+  }
+  .wc-mastery { top: 8px; right: 8px; }
+  .wc-note { font-size: 12px; padding: 10px 14px; }
+  .learn-footer { padding: 10px 14px; flex-wrap: wrap; gap: 8px; }
+  .lf-info { font-size: 12px; flex: 1; min-width: 0; }
+
+  /* ── Flashcards ── */
+  .fc-wrap-outer { padding: 16px 14px 90px; gap: 16px; }
+  .fc-stats { border-radius: 8px; }
+  .fc-stat { padding: 10px 4px; }
+  .fc-stat-n { font-size: 18px; }
+  .fc-stat-l { font-size: 7px; letter-spacing: .3px; }
+  .fc-card-scene { height: 210px; }
+  .fc-face { padding: 20px 16px; gap: 8px; }
+  .fc-word-en { font-size: 20px; }
+  .fc-word-heb { font-size: 36px; }
+  .fc-word-ph { font-size: 12px; }
+  .fc-word-note { font-size: 12px; }
+  .fc-face-label { font-size: 7px; top: 12px; }
+
+  /* Grade buttons — 2x2 grid on mobile */
+  .fc-btn-row {
+    gap: 8px;
+    justify-content: center;
+  }
+  .fc-btn-row .btn { padding: 9px 14px; font-size: 10px; }
+  #fc-grade-row, #ps-fc-grade-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+  #fc-grade-row .btn, #ps-fc-grade-row .btn {
+    padding: 10px 8px; font-size: 10px; justify-content: center;
+  }
+
+  /* ── Quiz ── */
+  .quiz-wrap { padding: 16px 14px 80px; }
+  .quiz-topbar { font-size: 9px; margin-bottom: 12px; }
+  .quiz-q-card { padding: 20px 16px; margin-bottom: 12px; border-radius: 10px; }
+  .quiz-dir-label { font-size: 8px; margin-bottom: 12px; }
+  .quiz-word-heb { font-size: 38px; }
+  .quiz-word-en { font-size: 22px; }
+  /* Quiz options: single column on mobile */
+  .quiz-opts { grid-template-columns: 1fr; gap: 8px; }
+  .quiz-opt { font-size: 14px; padding: 12px 14px; }
+  .quiz-fb { font-size: 13px; padding: 10px 14px; }
+
+  /* ── Complete overlay ── */
+  .complete-overlay { padding: 24px 16px; gap: 12px; justify-content: flex-start; padding-top: 40px; }
+  .complete-trophy { font-size: 52px; }
+  .complete-title { font-size: 22px; }
+  .complete-sub { font-size: 14px; }
+  .complete-stats { width: 100%; }
+  .c-stat { padding: 12px 10px; }
+  .c-stat-n { font-size: 22px; }
+  .complete-btns { gap: 8px; }
+  .complete-btns .btn { padding: 9px 14px; font-size: 10px; }
+
+  /* ── Progress dashboard ── */
+  .review-wrap { padding: 16px 14px 80px; }
+  .perf-section-title { font-size: 17px; }
+  .perf-section-sub { font-size: 13px; }
+  .perf-filters { gap: 6px; }
+  .pf-btn { font-size: 8px; padding: 5px 10px; }
+
+  /* Replace table with card-style rows on mobile */
+  .perf-table thead { display: none; }
+  .perf-table, .perf-table tbody, .perf-table tr, .perf-table td {
+    display: block; width: 100%;
+  }
+  .perf-table tr {
+    background: var(--s1);
+    border: 1px solid var(--b1);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    padding: 12px 14px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 4px 10px;
+    align-items: center;
+  }
+  .perf-table tr:hover { background: var(--s2); }
+  .pt-heb { grid-column: 1; grid-row: 1 / 3; font-size: 28px; padding: 0; align-self: center; }
+  .pt-en { grid-column: 2; grid-row: 1; font-size: 14px; padding: 0; font-weight: 500; }
+  .pt-ph { grid-column: 2; grid-row: 2; padding: 0; font-size: 10px; }
+  .pt-acc { grid-column: 3; grid-row: 1; padding: 0; font-size: 11px; text-align: right; }
+  .pt-speed { grid-column: 3; grid-row: 2; padding: 0; font-size: 10px; text-align: right; }
+  .pt-attempts { display: none; }
+  .pt-last { display: none; }
+  .pt-spk { grid-column: 1 / 4; grid-row: 3; padding: 6px 0 0; border-top: 1px solid var(--b1); display: flex; justify-content: flex-end; }
+
+  .prog-row { grid-template-columns: 100px 1fr 36px; gap: 8px; }
+  .prog-label { font-size: 12px; }
+
+  .due-chips { gap: 6px; }
+  .due-chip { padding: 8px 12px; gap: 8px; }
+  .due-chip-heb { font-size: 18px; }
+  .due-chip-en { font-size: 12px; }
+
+  /* ── Practice Hub ── */
+  .ph-header { padding: 30px 16px 0; }
+  .ph-title { font-size: 28px; }
+  .ph-sub { font-size: 14px; margin-bottom: 28px; }
+  .ph-modes {
+    grid-template-columns: 1fr;
+    padding: 0 16px 80px;
+    gap: 12px;
+  }
+  .mode-card { padding: 20px 18px; }
+  .mc-icon { font-size: 30px; margin-bottom: 10px; }
+  .mc-title { font-size: 15px; }
+  .mc-desc { font-size: 13px; margin-bottom: 14px; }
+  .mc-meta { gap: 6px; }
+  .mc-pill { font-size: 9px; }
+  .qf-times { gap: 6px; }
+  .qf-t { font-size: 10px; padding: 6px 12px; }
+  .cat-filter-grid { gap: 6px; }
+  .cf-btn { font-size: 12px; padding: 6px 12px; }
+
+  /* ── Practice session header ── */
+  .ps-header { padding: 10px 12px; gap: 8px; }
+  .ps-mode-label { display: none; }
+  .ps-title-area h2 { font-size: 13px; }
+  .ps-timer { font-size: 16px; min-width: 42px; }
+
+  /* Session complete */
+  .sc-wrap { padding: 32px 16px; gap: 12px; }
+  .sc-trophy { font-size: 52px; }
+  .sc-title { font-size: 22px; }
+  .sc-sub { font-size: 14px; }
+  .sc-stats { width: 100%; }
+  .sc-stat { padding: 12px 8px; }
+  .sc-stat-n { font-size: 22px; }
+  .sc-btns .btn { padding: 9px 12px; font-size: 10px; }
+
+  /* ── Alphabet modal ── */
+  .modal-box { padding: 20px 16px; max-height: 90svh; }
+  .modal-title { font-size: 16px; }
+  .aleph-grid { grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); gap: 5px; }
+  .aleph-char { font-size: 22px; }
+  .aleph-name { font-size: 7px; }
+  .ad-char { font-size: 52px; }
+  .ad-name { font-size: 15px; }
+  .ad-desc { font-size: 13px; }
+
+  /* ── FABs — smaller on mobile ── */
+  .fab-group { bottom: 14px; right: 14px; gap: 8px; }
+  .fab { width: 40px; height: 40px; font-size: 15px; }
+
+  /* ── Buttons — ensure they don't overflow ── */
+  .btn { font-size: 10px; padding: 9px 14px; letter-spacing: .8px; }
+  .btn-primary { padding: 10px 18px; }
+  .back-btn { font-size: 10px; padding: 6px 12px; }
+
+  /* ensure no child causes overflow */
+  .fc-wrap-outer, .quiz-wrap, .learn-wrap, .review-wrap, .ph-modes {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
+
+/* ── Safe area for iPhone notch / home bar ── */
+@supports (padding: max(0px)) {
+  .lesson-header,
+  .std-header,
+  .ps-header {
+    padding-top: max(14px, env(safe-area-inset-top));
+  }
+  .home-header {
+    padding-top: max(52px, calc(env(safe-area-inset-top) + 20px));
+  }
+  .ph-header {
+    padding-top: max(44px, calc(env(safe-area-inset-top) + 12px));
+  }
+  .fab-group {
+    bottom: max(22px, env(safe-area-inset-bottom));
+    right: max(22px, env(safe-area-inset-right));
+  }
+  .learn-footer {
+    padding-bottom: max(14px, env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 480px) {
+  @supports (padding: max(0px)) {
+    .home-header { padding-top: max(36px, calc(env(safe-area-inset-top) + 16px)); }
+    .ph-header { padding-top: max(30px, calc(env(safe-area-inset-top) + 10px)); }
+    .fab-group {
+      bottom: max(14px, env(safe-area-inset-bottom));
+      right: max(14px, env(safe-area-inset-right));
+    }
+  }
+}
+
+/* ── Slightly larger phones (iPhone Plus / Pro Max 390-430px) ── */
+@media (min-width: 390px) and (max-width: 480px) {
+  .fc-word-en { font-size: 22px; }
+  .fc-word-heb { font-size: 40px; }
+  .quiz-word-heb { font-size: 42px; }
+  .quiz-word-en { font-size: 24px; }
+  .wc-heb { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════ HOME ════════════════ -->
+<div class="screen active" id="home">
+  <div class="home-header">
+    <div class="home-eyebrow">Trip Edition · Maccabi Games 2026</div>
+    <div class="home-heb">עִבְרִית</div>
+    <div class="home-en">Ivrit</div>
+    <div class="home-sub">Everything you need for Israel. Nothing you don't.</div>
+    <div class="stats-strip">
+      <div class="stat-cell"><span class="stat-n" id="hs-lessons">0</span><span class="stat-l">Lessons</span></div>
+      <div class="stat-cell"><span class="stat-n" id="hs-mastered">0</span><span class="stat-l">Mastered</span></div>
+      <div class="stat-cell"><span class="stat-n" id="hs-weak">0</span><span class="stat-l">Need Work</span></div>
+      <div class="stat-cell"><span class="stat-n" id="hs-streak">–</span><span class="stat-l">Streak</span></div>
+    </div>
+    <!-- Home nav pills -->
+    <div class="home-nav-pills">
+      <button class="btn btn-secondary" onclick="showPracticeHub()" style="font-size:13px;padding:10px 22px;gap:8px">
+        <span>⚡</span> Practice Hub
+      </button>
+      <button class="btn btn-secondary" onclick="showReview()" style="font-size:13px;padding:10px 22px;gap:8px">
+        <span>📊</span> Progress Dashboard
+      </button>
+      <button class="btn btn-secondary" onclick="openAleph()" style="font-size:13px;padding:10px 22px;gap:8px">
+        <span>א</span> Alphabet
+      </button>
+    </div>
+  </div>
+  <div class="review-banner" id="review-banner">
+    <div class="review-banner-inner">
+      <div class="rb-text">
+        <h3>📋 Words Due for Review</h3>
+        <p id="rb-count-text">Some words are ready to be reviewed</p>
+      </div>
+      <button class="btn btn-primary" onclick="showReview()">Review Now →</button>
+    </div>
+  </div>
+  <div class="cat-grid" id="cat-grid"></div>
+</div>
+
+<!-- ════════════════ CATEGORY ════════════════ -->
+<div class="screen" id="category-screen">
+  <div class="std-header">
+    <div class="std-header-top">
+      <button class="back-btn" onclick="showHome()">← Home</button>
+      <div class="std-header-info">
+        <h1 id="cat-title-el">Category</h1>
+        <p id="cat-sub-el">Description</p>
+      </div>
+    </div>
+  </div>
+  <div class="lessons-list" id="lessons-list"></div>
+</div>
+
+<!-- ════════════════ LESSON ════════════════ -->
+<div class="screen" id="lesson-screen">
+  <div class="lesson-header">
+    <button class="back-btn" onclick="goBackFromLesson()">←</button>
+    <div class="lesson-title-area">
+      <div class="lesson-breadcrumb" id="l-breadcrumb"></div>
+      <h2 id="l-title"></h2>
+    </div>
+    <div class="lp-row">
+      <div class="lp-bar"><div class="lp-fill" id="lp-fill" style="width:0%"></div></div>
+      <span id="lp-pct">0%</span>
+    </div>
+  </div>
+  <div class="phase-tabs">
+    <button class="phase-tab active" id="tab-learn" onclick="goPhase('learn',this)">① Learn</button>
+    <button class="phase-tab" id="tab-flash" onclick="goPhase('flash',this)">② Flashcards</button>
+    <button class="phase-tab" id="tab-quiz" onclick="goPhase('quiz',this)">③ Quiz</button>
+  </div>
+  <div class="phase-content">
+
+    <!-- LEARN -->
+    <div class="phase-pane active" id="pane-learn">
+      <div class="learn-wrap" id="learn-cards"></div>
+      <div class="learn-footer">
+        <span class="lf-info" id="lf-info"></span>
+        <button class="btn btn-primary" onclick="goPhase('flash',document.getElementById('tab-flash'))">Flashcards →</button>
+      </div>
+    </div>
+
+    <!-- FLASHCARDS -->
+    <div class="phase-pane" id="pane-flash">
+      <div class="fc-wrap-outer">
+        <div class="no-voice-banner" id="fc-no-voice">ℹ️ No Hebrew voice found. Works best on Chrome desktop or iOS Safari with Hebrew installed.</div>
+
+        <!-- stats -->
+        <div class="fc-stats">
+          <div class="fc-stat"><span class="fc-stat-n s-green" id="fc-s-good">0</span><span class="fc-stat-l">Got it</span></div>
+          <div class="fc-stat"><span class="fc-stat-n s-red" id="fc-s-again">0</span><span class="fc-stat-l">Again</span></div>
+          <div class="fc-stat"><span class="fc-stat-n s-gold" id="fc-s-left">0</span><span class="fc-stat-l">Left</span></div>
+          <div class="fc-stat"><span class="fc-stat-n s-purple" id="fc-s-fast">0</span><span class="fc-stat-l">Fast ⚡</span></div>
+        </div>
+
+        <!-- progress bar -->
+        <div class="fc-progress-row">
+          <div class="fc-prog-label" id="fc-prog-label">Card 1 of 8</div>
+          <div class="fc-prog-bar"><div class="fc-prog-fill" id="fc-prog-fill" style="width:0%"></div></div>
+        </div>
+
+        <!-- card -->
+        <div class="fc-card-scene show-front" id="fc-scene" onclick="handleCardClick()">
+          <div class="fc-card-inner" id="fc-inner">
+            <div class="fc-face fc-front" id="fc-front-face">
+              <span class="fc-face-label">Think of the Hebrew →</span>
+              <div class="fc-word-en" id="fc-word-en">Loading…</div>
+            </div>
+            <div class="fc-face fc-back" id="fc-back-face">
+              <span class="fc-face-label">Hebrew</span>
+              <div class="fc-word-heb" id="fc-word-heb"></div>
+              <div class="fc-word-ph" id="fc-word-ph"></div>
+              <div class="fc-word-note" id="fc-word-note"></div>
+              <button class="spk-lg" id="fc-spk-btn" onclick="event.stopPropagation();speakHeb(currentCard.heb,this)">🔊</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- controls -->
+        <div class="fc-controls" id="fc-controls">
+          <div class="fc-hint-text" id="fc-hint-text">Tap card to flip · See Hebrew answer</div>
+          <div class="fc-btn-row" id="fc-btn-row">
+            <button class="btn btn-secondary" onclick="fcPrev()" id="fc-prev-btn">← Back</button>
+            <button class="btn btn-primary" onclick="fcFlip()" id="fc-flip-btn">Flip Card</button>
+            <button class="btn btn-ghost" onclick="fcSkip()">Skip</button>
+          </div>
+          <div class="fc-btn-row hidden" id="fc-grade-row">
+            <button class="btn btn-red" onclick="fcGrade('again')">✕ Again</button>
+            <button class="btn btn-secondary" onclick="fcGrade('hard')">≈ Hard</button>
+            <button class="btn btn-green" onclick="fcGrade('good')">✓ Got It</button>
+            <button class="btn" style="border-color:var(--purple);color:var(--purple)" onclick="fcGrade('easy')">⚡ Easy</button>
+          </div>
+        </div>
+        <div class="fc-hint-text" style="margin-top:4px" id="fc-speed-display"></div>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="phase-pane" id="pane-quiz">
+      <div class="quiz-wrap">
+        <div class="quiz-topbar">
+          <span class="quiz-qnum" id="q-num">Question 1 of 8</span>
+          <span class="quiz-streak" id="q-streak"></span>
+        </div>
+        <div class="quiz-q-card">
+          <div class="quiz-dir-label" id="q-dir"></div>
+          <div id="q-word"></div>
+          <button class="spk" id="q-spk" style="display:none;margin-top:12px" onclick="speakHeb(currentQuizWord.heb,this)">🔊</button>
+          <div class="quiz-timer-bar-wrap">
+            <div class="quiz-timer-track"><div class="quiz-timer-fill" id="q-timer-fill" style="width:100%"></div></div>
+          </div>
+        </div>
+        <div class="quiz-opts" id="q-opts"></div>
+        <div class="quiz-fb" id="q-fb"></div>
+        <button class="btn btn-primary hidden" id="q-next" onclick="nextQuiz()" style="display:none;margin:0 auto">Next →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════ REVIEW SCREEN ════════════════ -->
+<div class="screen" id="review-screen">
+  <div class="std-header">
+    <div class="std-header-top">
+      <button class="back-btn" onclick="showHome()">← Home</button>
+      <div class="std-header-info">
+        <h1>📊 Progress Dashboard</h1>
+        <p>Your mastery over every word you've studied</p>
+      </div>
+    </div>
+  </div>
+  <div class="review-wrap">
+
+    <!-- due for review -->
+    <div class="due-section" id="due-section">
+      <div class="perf-section-title">Due for Review</div>
+      <div class="perf-section-sub" id="due-sub">Words that need a refresh based on your history.</div>
+      <div class="due-chips" id="due-chips"></div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- category progress bars -->
+    <div class="progress-chart-section">
+      <div class="perf-section-title">Category Progress</div>
+      <div class="perf-section-sub">Mastery % per category based on quiz accuracy.</div>
+      <div class="prog-bars" id="prog-bars"></div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- full word table -->
+    <div>
+      <div class="perf-section-title">All Words</div>
+      <div class="perf-section-sub">Every word you've encountered, with accuracy and speed data.</div>
+      <div class="perf-filters">
+        <button class="pf-btn active" onclick="filterPerf('all',this)">All</button>
+        <button class="pf-btn" onclick="filterPerf('mastered',this)">⚡ Mastered</button>
+        <button class="pf-btn" onclick="filterPerf('known',this)">✓ Known</button>
+        <button class="pf-btn" onclick="filterPerf('weak',this)">✕ Need Work</button>
+        <button class="pf-btn" onclick="filterPerf('unseen',this)">○ Unseen</button>
+      </div>
+      <table class="perf-table" id="perf-table">
+        <thead>
+          <tr>
+            <th>Hebrew</th>
+            <th>English</th>
+            <th>Phonetic</th>
+            <th>Accuracy</th>
+            <th>Speed</th>
+            <th>Tries</th>
+            <th>Last Seen</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="perf-tbody"></tbody>
+      </table>
+      <div class="empty-state hidden" id="perf-empty">No words in this category yet.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════ PRACTICE HUB ════════════════ -->
+<div class="screen" id="practice-screen">
+  <div class="ph-header">
+    <div class="ph-eyebrow">Free Practice · No Structure Required</div>
+    <div class="ph-title">Practice <span>Hub</span></div>
+    <div class="ph-sub">Pool everything together. Drill weak spots. Squeeze in five minutes between tasks.</div>
+  </div>
+  <div class="ph-modes" id="ph-modes">
+
+    <!-- FULL BLITZ -->
+    <div class="mode-card mode-blitz" id="mc-blitz">
+      <span class="mc-icon">🌪️</span>
+      <div class="mc-title">Full Blitz</div>
+      <div class="mc-desc">Every word from every lesson you've studied, pooled together. The ultimate combined drill for when you feel ready for everything at once.</div>
+      <div class="mc-meta">
+        <span class="mc-pill" id="blitz-pill">Loading…</span>
+        <span class="mc-pill">All categories</span>
+      </div>
+      <button class="mc-start" onclick="startBlitz()">Launch Blitz →</button>
+    </div>
+
+    <!-- WEAK SPOTS -->
+    <div class="mode-card mode-weak" id="mc-weak">
+      <span class="mc-icon">🎯</span>
+      <div class="mc-title">Weak Spots</div>
+      <div class="mc-desc">Only the words you've gotten wrong or struggled with across all lessons. Smart drilling that focuses your time where it matters most.</div>
+      <div class="mc-meta">
+        <span class="mc-pill" id="weak-pill">Loading…</span>
+        <span class="mc-pill">Accuracy &lt; 80%</span>
+      </div>
+      <button class="mc-start" onclick="startWeakSpots()">Drill Weak Spots →</button>
+    </div>
+
+    <!-- QUICK FIRE -->
+    <div class="mode-card mode-quick" id="mc-quick">
+      <span class="mc-icon">⚡</span>
+      <div class="mc-title">Quick Fire</div>
+      <div class="mc-desc">Pick a time limit and go. Pulls random words from everything you've seen. Perfect for 5 minutes on the bus or before a meeting.</div>
+      <div class="mc-meta">
+        <span class="mc-pill">Timed session</span>
+        <span class="mc-pill">Any category</span>
+      </div>
+      <div class="qf-times" id="qf-time-btns">
+        <button class="qf-t sel" onclick="selectQFTime(5,this)">5 min</button>
+        <button class="qf-t" onclick="selectQFTime(10,this)">10 min</button>
+        <button class="qf-t" onclick="selectQFTime(15,this)">15 min</button>
+        <button class="qf-t" onclick="selectQFTime(0,this)">No limit</button>
+      </div>
+      <button class="mc-start" onclick="startQuickFire()">Start Quick Fire →</button>
+    </div>
+
+    <!-- BY CATEGORY MIX -->
+    <div class="mode-card mode-cats" id="mc-cats">
+      <span class="mc-icon">🔀</span>
+      <div class="mc-title">Category Mix</div>
+      <div class="mc-desc">Choose any combination of categories to practice together. Mix food + slang, or navigation + emergencies — you decide the blend.</div>
+      <div class="mc-meta">
+        <span class="mc-pill" id="catmix-pill">0 categories selected</span>
+        <span class="mc-pill" id="catmix-count-pill">0 words</span>
+      </div>
+      <div class="cat-filter-grid" id="cat-filter-grid"></div>
+      <button class="mc-start" id="catmix-start-btn" onclick="startCatMix()" disabled style="opacity:.4">Select Categories →</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════ PRACTICE SESSION ════════════════ -->
+<div class="screen" id="practice-session-screen">
+  <div class="ps-header">
+    <button class="back-btn" onclick="showPracticeHub()">←</button>
+    <div class="ps-title-area">
+      <div class="ps-mode-label" id="ps-mode-label">Practice Mode</div>
+      <h2 id="ps-title">Session</h2>
+    </div>
+    <div class="ps-timer" id="ps-timer"></div>
+  </div>
+
+  <div class="ps-tabs">
+    <button class="ps-tab active" id="ps-tab-flash" onclick="psGoPhase('flash',this)">① Flashcards</button>
+    <button class="ps-tab" id="ps-tab-quiz" onclick="psGoPhase('quiz',this)">② Quiz</button>
+  </div>
+
+  <div class="phase-content" id="ps-phase-content">
+
+    <!-- PS FLASH PANE — reuses same markup IDs prefixed ps- -->
+    <div class="phase-pane active" id="ps-pane-flash">
+      <div class="fc-wrap-outer">
+        <div class="no-voice-banner" id="ps-no-voice">ℹ️ No Hebrew voice found. Works best on Chrome desktop or iOS Safari.</div>
+        <div class="fc-stats">
+          <div class="fc-stat"><span class="fc-stat-n s-green" id="ps-fc-good">0</span><span class="fc-stat-l">Got it</span></div>
+          <div class="fc-stat"><span class="fc-stat-n s-red" id="ps-fc-again">0</span><span class="fc-stat-l">Again</span></div>
+          <div class="fc-stat"><span class="fc-stat-n s-gold" id="ps-fc-left">0</span><span class="fc-stat-l">Left</span></div>
+          <div class="fc-stat"><span class="fc-stat-n s-purple" id="ps-fc-fast">0</span><span class="fc-stat-l">Fast ⚡</span></div>
+        </div>
+        <div class="fc-progress-row">
+          <div class="fc-prog-label" id="ps-fc-label">Card 1 of …</div>
+          <div class="fc-prog-bar"><div class="fc-prog-fill" id="ps-fc-prog" style="width:0%"></div></div>
+        </div>
+        <div class="fc-card-scene show-front" id="ps-fc-scene" onclick="psFCHandleClick()">
+          <div class="fc-card-inner" id="ps-fc-inner">
+            <div class="fc-face fc-front" id="ps-fc-front">
+              <span class="fc-face-label">Think of the Hebrew →</span>
+              <div class="fc-word-en" id="ps-fc-en">Loading…</div>
+            </div>
+            <div class="fc-face fc-back" id="ps-fc-back">
+              <span class="fc-face-label">Hebrew</span>
+              <div class="fc-word-heb" id="ps-fc-heb"></div>
+              <div class="fc-word-ph" id="ps-fc-ph"></div>
+              <div class="fc-word-note" id="ps-fc-note"></div>
+              <button class="spk-lg" id="ps-fc-spk" onclick="event.stopPropagation();speakHeb(psCurrentCard?psCurrentCard.heb:'',this)">🔊</button>
+            </div>
+          </div>
+        </div>
+        <div class="fc-controls">
+          <div class="fc-hint-text" id="ps-fc-hint">Tap card or "Flip Card" to see Hebrew</div>
+          <div class="fc-btn-row" id="ps-fc-btn-row">
+            <button class="btn btn-secondary" onclick="psFCPrev()" id="ps-fc-prev">← Back</button>
+            <button class="btn btn-primary" onclick="psFCFlip()" id="ps-fc-flip-btn">Flip Card</button>
+            <button class="btn btn-ghost" onclick="psFCSkip()">Skip</button>
+          </div>
+          <div class="fc-btn-row hidden" id="ps-fc-grade-row">
+            <button class="btn btn-red" onclick="psFCGrade('again')">✕ Again</button>
+            <button class="btn btn-secondary" onclick="psFCGrade('hard')">≈ Hard</button>
+            <button class="btn btn-green" onclick="psFCGrade('good')">✓ Got It</button>
+            <button class="btn" style="border-color:var(--purple);color:var(--purple)" onclick="psFCGrade('easy')">⚡ Easy</button>
+          </div>
+        </div>
+        <div class="fc-hint-text" id="ps-fc-speed"></div>
+      </div>
+    </div>
+
+    <!-- PS QUIZ PANE -->
+    <div class="phase-pane" id="ps-pane-quiz">
+      <div class="quiz-wrap">
+        <div class="quiz-topbar">
+          <span class="quiz-qnum" id="ps-q-num">Question 1 of …</span>
+          <span class="quiz-streak" id="ps-q-streak"></span>
+        </div>
+        <div class="quiz-q-card">
+          <div class="quiz-dir-label" id="ps-q-dir"></div>
+          <div id="ps-q-word"></div>
+          <button class="spk" id="ps-q-spk" style="display:none;margin-top:12px">🔊</button>
+          <div class="quiz-timer-bar-wrap">
+            <div class="quiz-timer-track"><div class="quiz-timer-fill" id="ps-q-timer" style="width:100%"></div></div>
+          </div>
+        </div>
+        <div class="quiz-opts" id="ps-q-opts"></div>
+        <div class="quiz-fb" id="ps-q-fb"></div>
+        <button class="btn btn-primary" id="ps-q-next" style="display:none;margin:0 auto" onclick="psNextQuiz()">Next →</button>
+      </div>
+    </div>
+
+    <!-- PS COMPLETE PANE -->
+    <div class="phase-pane" id="ps-pane-complete">
+      <div class="sc-wrap">
+        <div class="sc-trophy" id="sc-trophy">🌟</div>
+        <span class="sc-mode-badge" id="sc-mode-badge">Practice Session</span>
+        <div class="sc-title" id="sc-title">Session Complete!</div>
+        <div class="sc-sub" id="sc-sub">Well done.</div>
+        <div class="sc-stats">
+          <div class="sc-stat"><span class="sc-stat-n s-green" id="sc-correct">0</span><span class="sc-stat-l">Correct</span></div>
+          <div class="sc-stat"><span class="sc-stat-n s-red" id="sc-missed">0</span><span class="sc-stat-l">Missed</span></div>
+          <div class="sc-stat"><span class="sc-stat-n s-purple" id="sc-fast">0</span><span class="sc-stat-l">Fast ⚡</span></div>
+          <div class="sc-stat"><span class="sc-stat-n s-gold" id="sc-words">0</span><span class="sc-stat-l">Words</span></div>
+        </div>
+        <div class="sc-weak-title" id="sc-weak-title" style="display:none">Words to Focus On:</div>
+        <div class="sc-weak-chips" id="sc-weak-chips"></div>
+        <div class="sc-btns">
+          <button class="btn btn-secondary" onclick="psRetry()">↺ Go Again</button>
+          <button class="btn btn-secondary" onclick="showPracticeHub()">← Practice Hub</button>
+          <button class="btn btn-primary" onclick="showHome()">🏠 Home</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="complete-overlay" id="complete-overlay">
+  <div class="complete-trophy" id="c-trophy">🌟</div>
+  <div class="complete-title" id="c-title">Lesson Complete!</div>
+  <div class="complete-sub" id="c-sub">Great work today.</div>
+  <div class="complete-stats">
+    <div class="c-stat"><span class="c-stat-n s-green" id="c-correct">0</span><span class="c-stat-l">Correct</span></div>
+    <div class="c-stat"><span class="c-stat-n s-red" id="c-missed">0</span><span class="c-stat-l">Missed</span></div>
+    <div class="c-stat"><span class="c-stat-n s-purple" id="c-fast">0</span><span class="c-stat-l">Fast ⚡</span></div>
+    <div class="c-stat"><span class="c-stat-n s-gold" id="c-words">0</span><span class="c-stat-l">Words</span></div>
+  </div>
+  <div class="weak-words-section" id="weak-words-section" style="display:none">
+    <div class="weak-words-title">Words to Focus On:</div>
+    <div id="weak-word-chips"></div>
+  </div>
+  <div class="complete-btns">
+    <button class="btn btn-secondary" onclick="retryQuiz()">↺ Retry Quiz</button>
+    <button class="btn btn-secondary" onclick="goPhase('flash',document.getElementById('tab-flash'));document.getElementById('complete-overlay').classList.remove('show')">↺ Flashcards</button>
+    <button class="btn btn-primary" onclick="finishLesson()">← Back to Lessons</button>
+  </div>
+</div>
+
+<!-- ════════════════ ALPHABET MODAL ════════════════ -->
+<div class="modal-overlay" id="aleph-modal" onclick="if(event.target===this)closeAleph()">
+  <div class="modal-box">
+    <div class="modal-top">
+      <div class="modal-title">The Aleph-Bet · אָלֶף-בֵּית</div>
+      <button class="modal-x" onclick="closeAleph()">✕</button>
+    </div>
+    <div class="aleph-grid" id="aleph-grid"></div>
+    <div class="aleph-detail" id="aleph-detail"></div>
+  </div>
+</div>
+
+<!-- ════════════════ FAB ════════════════ -->
+<div class="fab-group">
+  <button class="fab" style="background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.3);color:var(--purple)" onclick="showPracticeHub()" title="Practice Hub">⚡</button>
+  <button class="fab fab-review" onclick="showReview()" title="Progress Dashboard">📊</button>
+  <button class="fab" onclick="openAleph()" title="Alphabet Reference">א</button>
+</div>
+
+<script>
+'use strict';
+// ══════════════════════════════════════════════
+// SPEECH ENGINE
+// ══════════════════════════════════════════════
+let hebVoice = null;
+
+function initVoices() {
+  const vs = window.speechSynthesis.getVoices();
+  hebVoice = vs.find(v => v.lang === 'he-IL') || vs.find(v => v.lang.startsWith('he')) || null;
+  if (!hebVoice) document.querySelectorAll('.no-voice-banner').forEach(e => e.classList.add('show'));
+}
+window.speechSynthesis.onvoiceschanged = initVoices;
+initVoices();
+
+function speakHeb(text, btn) {
+  if (!text) return;
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.spk.playing,.spk-lg.playing').forEach(b => b.classList.remove('playing'));
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'he-IL'; u.rate = 0.82;
+  if (hebVoice) u.voice = hebVoice;
+  if (btn) { btn.classList.add('playing'); u.onend = u.onerror = () => btn.classList.remove('playing'); }
+  window.speechSynthesis.speak(u);
+}
+
+// ══════════════════════════════════════════════
+// CURRICULUM DATA
+// ══════════════════════════════════════════════
+const CURRICULUM = [
+  { id:'essentials', icon:'✡️', title:'Essentials', desc:'The core words every visitor must know. Start here.', lessons:[
+    { title:'Greetings & Courtesy', desc:'Hello, goodbye, please, thank you — the daily foundations.', words:[
+      {en:'Hello / Peace',heb:'שָׁלוֹם',ph:'Shalom',note:'Works for hello, goodbye & "peace". The universal Israeli greeting.'},
+      {en:'Good morning',heb:'בֹּקֶר טוֹב',ph:'Boker tov',note:'Reply with "Boker or" (בֹּקֶר אוֹר) — meaning "morning light".'},
+      {en:'Good evening',heb:'עֶרֶב טוֹב',ph:'Erev tov',note:'Use after around 6pm.'},
+      {en:'Goodbye',heb:'לְהִתְרָאוֹת',ph:'Lehitraot',note:'Means "until we see each other again". Shalom also works.'},
+      {en:'Please / You\'re welcome',heb:'בְּבַקָּשָׁה',ph:'Bevakasha',note:'Also means "here you go". Incredibly versatile.'},
+      {en:'Thank you',heb:'תּוֹדָה',ph:'Toda',note:'Add "raba" for "thank you very much" — toda raba (תּוֹדָה רַבָּה).'},
+      {en:'Sorry / Excuse me',heb:'סְלִיחָה',ph:'Slicha',note:'Use to apologize, get attention, or squeeze past someone.'},
+      {en:'Nice to meet you',heb:'נָעִים מְאֹד',ph:"Na'im me'od",note:'Literally "very pleasant".'},
+    ]},
+    { title:'Yes, No & Replies', desc:'The building blocks of every conversation.', words:[
+      {en:'Yes',heb:'כֵּן',ph:'Ken',note:'Simple and clear.'},
+      {en:'No',heb:'לֹא',ph:'Lo',note:'Also used as "not" — Lo todah = no thank you.'},
+      {en:'OK / Fine',heb:'בְּסֵדֶר',ph:"B'seder",note:'THE most common Israeli expression. Like "OK" but used far more.'},
+      {en:'Understood',heb:'הֲבַנְתִּי',ph:'Hevanti',note:'Great for showing comprehension.'},
+      {en:'I don\'t understand',heb:'אֲנִי לֹא מֵבִין',ph:'Ani lo mevin',note:'Say this and Israelis will often switch to English.'},
+      {en:'Slowly please',heb:'לְאַט, בְּבַקָּשָׁה',ph:"Le'at, bevakasha",note:'Ask someone to slow down when they speak.'},
+      {en:'Do you speak English?',heb:'אַתָּה מְדַבֵּר אַנְגְּלִית?',ph:'Ata medaber anglit?',note:'Most Israelis under 50 will say yes, especially in cities.'},
+      {en:'I speak a little Hebrew',heb:'אֲנִי מְדַבֵּר קְצָת עִבְרִית',ph:'Ani medaber ktzat Ivrit',note:'Earns enormous goodwill. Israelis love when tourists try.'},
+    ]},
+    { title:'Numbers 1–10', desc:'Essential for prices, times, and ordering food.', words:[
+      {en:'One',heb:'אֶחָד',ph:'Echad',note:'Masculine. Feminine: achat (אַחַת).'},
+      {en:'Two',heb:'שְׁנַיִם',ph:'Shtayim',note:'Most commonly used form.'},
+      {en:'Three',heb:'שָׁלוֹשׁ',ph:'Shalosh',note:''},
+      {en:'Four',heb:'אַרְבַּע',ph:'Arba',note:''},
+      {en:'Five',heb:'חָמֵשׁ',ph:'Chamesh',note:''},
+      {en:'Six',heb:'שֵׁשׁ',ph:'Shesh',note:''},
+      {en:'Seven',heb:'שֶׁבַע',ph:'Sheva',note:''},
+      {en:'Eight',heb:'שְׁמוֹנֶה',ph:'Shmone',note:''},
+      {en:'Nine',heb:'תֵּשַׁע',ph:'Tesha',note:''},
+      {en:'Ten',heb:'עֶשֶׂר',ph:'Eser',note:''},
+    ]},
+  ]},
+  { id:'navigation', icon:'🗺️', title:'Getting Around', desc:'Directions, transport, and finding your way through Israeli cities.', lessons:[
+    { title:'Directions', desc:'Where is it? Left, right, straight — know these cold.', words:[
+      {en:'Where is…?',heb:'אֵיפֹה…?',ph:'Eifo…?',note:'The single most useful word. "Eifo ha-sheiruthim?" = where is the bathroom?'},
+      {en:'How do I get to…?',heb:'אֵיךְ מַגִּיעִים לְ…?',ph:"Eich magi'im le…?",note:'Follow with a place name. People will point and gesture.'},
+      {en:'Left',heb:'שְׂמֹאל',ph:'Smol',note:'Learn this cold — vital for any direction conversation.'},
+      {en:'Right',heb:'יָמִין',ph:'Yamin',note:''},
+      {en:'Straight ahead',heb:'יָשָׁר',ph:'Yashar',note:'Also means "direct" or "honest" — versatile word.'},
+      {en:'Near / Close',heb:'קָרוֹב',ph:'Karov',note:'Useful for judging whether to walk somewhere.'},
+      {en:'Far',heb:'רָחוֹק',ph:'Rachok',note:''},
+      {en:'Street / Road',heb:'רְחוֹב',ph:'Rechov',note:'Abbreviated on signs as "רח\'".'},
+    ]},
+    { title:'Transport & Travel', desc:'Buses, taxis, trains, and getting to the airport.', words:[
+      {en:'Bus',heb:'אוֹטוֹבּוּס',ph:'Otobus',note:'Egged is the national bus company. Very reliable.'},
+      {en:'Train',heb:'רַכֶּבֶת',ph:'Rakevet',note:'Israel Railways connects most major cities.'},
+      {en:'Taxi',heb:'מוֹנִית',ph:'Monit',note:'Always insist on the meter — "mishmeret, bevakasha".'},
+      {en:'Shared taxi',heb:'שֵׁרוּת',ph:'Sherut',note:'Shared minibus taxis — cheap, runs on Shabbat when regular buses don\'t.'},
+      {en:'Airport',heb:'שְׂדֵה תְּעוּפָה',ph:"Sdeh te'ufa",note:'Most people just say "Ben Gurion".'},
+      {en:'Train station',heb:'תַּחֲנַת רַכֶּבֶת',ph:'Takhanat rakevet',note:''},
+      {en:'Stop here please',heb:'עֲצֹר פֹּה, בְּבַקָּשָׁה',ph:'Atzor po, bevakasha',note:'For taxis and sheruts.'},
+      {en:'Ticket',heb:'כַּרְטִיס',ph:'Kartis',note:'Also used for business cards, cards in general.'},
+    ]},
+  ]},
+  { id:'food', icon:'🥙', title:'Food & Eating', desc:'Order, enjoy, and navigate Israeli cuisine like a local.', lessons:[
+    { title:'At the Restaurant', desc:'Ordering, customizing, paying — the full dining experience.', words:[
+      {en:'A table for two please',heb:'שֻׁלְחָן לִשְׁנַיִם, בְּבַקָּשָׁה',ph:'Shulchan lishnayim, bevakasha',note:'Restaurants fill fast on weekends — book ahead when you can.'},
+      {en:'Menu please',heb:'תַּפְרִיט, בְּבַקָּשָׁה',ph:'Tafrit, bevakasha',note:'Most tourist-area restaurants have English menus — just ask.'},
+      {en:'What do you recommend?',heb:'מַה אַתָּה מַמְלִיץ?',ph:'Ma ata mamlitz?',note:'Israelis love giving food opinions. You\'ll get great answers.'},
+      {en:'I\'ll have…',heb:'אֲנִי אֶקַּח…',ph:'Ani ekach…',note:'Literally "I\'ll take". Follow with the dish name.'},
+      {en:'The bill please',heb:'חֶשְׁבּוֹן, בְּבַקָּשָׁה',ph:'Cheshbon, bevakasha',note:'Tip 10–15% at sit-down restaurants.'},
+      {en:'Delicious!',heb:'טָעִים!',ph:"Ta'im!",note:'Say this and watch any Israeli\'s face light up.'},
+      {en:'I\'m allergic to…',heb:'אֲנִי אָלֶרְגִי לְ…',ph:'Ani alergi le…',note:'Critical if you have food allergies.'},
+      {en:'Without…',heb:'בְּלִי…',ph:'Bli…',note:'"Bli basar" = without meat. Useful for customizing orders.'},
+    ]},
+    { title:'Israeli Foods', desc:'The dishes and ingredients you\'ll encounter everywhere.', words:[
+      {en:'Falafel',heb:'פָּלָאפֶל',ph:'Falafel',note:'Fried chickpea balls — a national staple. Get it in a pita.'},
+      {en:'Hummus',heb:'חוּמוּס',ph:'Humus',note:'The hummus here will ruin you for hummus everywhere else.'},
+      {en:'Pita',heb:'פִּיתָה',ph:'Pita',note:'Flat bread — served with absolutely everything.'},
+      {en:'Shakshuka',heb:'שַׁקְשׁוּקָה',ph:'Shakshuka',note:'Eggs poached in spiced tomato sauce — incredible for breakfast.'},
+      {en:'Shawarma',heb:'שָׁווַארְמָה',ph:'Shawarma',note:'Rotisserie meat in pita. Find the spots with lines — they\'re the best.'},
+      {en:'Tahini',heb:'טְחִינָה',ph:'Techina',note:'Sesame paste sauce — goes on everything.'},
+      {en:'Sabich',heb:'סָבִּיח',ph:'Sabich',note:'Fried eggplant, egg, hummus in pita. Don\'t miss it.'},
+      {en:'Kosher',heb:'כָּשֵׁר',ph:'Kasher',note:'Many restaurants are kosher — no mixing of meat and dairy on the same plate.'},
+    ]},
+    { title:'Drinks & Café', desc:'Israeli coffee culture is world-class. Order with confidence.', words:[
+      {en:'Water',heb:'מַיִם',ph:'Mayim',note:'Tap water in Israel is safe to drink everywhere.'},
+      {en:'Coffee',heb:'קָפֶה',ph:'Kafe',note:'Espresso-based drinks are the norm. Instant coffee exists but is beneath you.'},
+      {en:'Milk',heb:'חָלָב',ph:'Chalav',note:'"Kafe im chalav" = coffee with milk.'},
+      {en:'Tea',heb:'תֵּה',ph:'Teh',note:'Mint tea (teh nana) is hugely popular.'},
+      {en:'Beer',heb:'בִּירָה',ph:'Bira',note:'Goldstar and Maccabee are the local Israeli beers.'},
+      {en:'Wine',heb:'יַיִן',ph:'Yayin',note:'Israeli wine is excellent — try the Golan Heights wineries.'},
+      {en:'Juice',heb:'מִיץ',ph:'Mitz',note:'"Mitz tapuzim" = fresh-squeezed orange juice. Found everywhere.'},
+      {en:'Ice',heb:'קֶרַח',ph:'Kerach',note:'"Im kerach bevakasha" = with ice please.'},
+    ]},
+  ]},
+  { id:'shopping', icon:'🛍️', title:'Shopping & Markets', desc:'Navigate the shuk, bargain well, and handle Israeli money.', lessons:[
+    { title:'At the Market (Shuk)', desc:'Bargaining is expected. These phrases are your tools.', words:[
+      {en:'How much does this cost?',heb:'כַּמָּה זֶּה עוֹלֶה?',ph:'Kama ze ole?',note:'Your most-used shopping phrase.'},
+      {en:'Too expensive',heb:'יָקָר מִדַּי',ph:'Yakar miday',note:'Say with a smile — this opens the negotiation.'},
+      {en:'Can you lower the price?',heb:'אֶפְשָׁר לְהוֹרִיד אֶת הַמְּחִיר?',ph:'Efshar lehorid et ha-mechir?',note:'Polite way to ask for a discount.'},
+      {en:'I\'ll take it',heb:'אֲנִי לוֹקֵחַ אֶת זֶּה',ph:'Ani lokekh et ze',note:'Seals the deal.'},
+      {en:'Do you have…?',heb:'יֵשׁ לָךְ…?',ph:'Yesh lekha…?',note:'"Yesh" = there is. A crucial building block.'},
+      {en:'I\'m just looking',heb:'אֲנִי רַק מִסְתַּכֵּל',ph:'Ani rak mistakel',note:'Saves you from persistent vendors.'},
+      {en:'Big / Small',heb:'גָּדוֹל / קָטָן',ph:'Gadol / Katan',note:'For asking about sizes.'},
+      {en:'Change / Receipt',heb:'עוֹדֵף / קַבָּלָה',ph:'Odef / Kabala',note:'Always get your odef (change) and kabala (receipt).'},
+    ]},
+    { title:'Money & Payment', desc:'Shekels, cards, and handling transactions.', words:[
+      {en:'Shekel',heb:'שֶׁקֶל',ph:'Shekel',note:'NIS — New Israeli Shekel. ~1 USD ≈ 3.6–3.8 NIS.'},
+      {en:'Credit card',heb:'כַּרְטִיס אַשְׁרַאי',ph:'Kartis ashrai',note:'Cards are widely accepted in cities and shops.'},
+      {en:'Cash',heb:'מְזוּמָן',ph:'Mezuman',note:'Some markets and small places prefer cash.'},
+      {en:'ATM',heb:'כַּסְפּוֹמַט',ph:'Kaspomat',note:'Widely available. Use your bank card for best rates.'},
+      {en:'Free / No charge',heb:'חִינָּם',ph:'Chinam',note:'As in, it costs nothing.'},
+      {en:'Expensive / Cheap',heb:'יָקָר / זוֹל',ph:'Yakar / Zol',note:'Zol = cheap/inexpensive.'},
+      {en:'Tip',heb:'טִיפ',ph:'Tip',note:'Yes, they use the English word. 10–15% at restaurants.'},
+      {en:'Tax refund',heb:'מַע״מ',ph:"Ma'am",note:'VAT is 17% — tourists can claim refunds on purchases over 400 NIS at the airport.'},
+    ]},
+  ]},
+  { id:'culture', icon:'🕌', title:'Culture & Social', desc:'Fit in, make friends, and understand the rhythm of Israeli life.', lessons:[
+    { title:'Social Life', desc:'Toasts, celebrations, and the expressions you\'ll hear every day.', words:[
+      {en:'Cheers! (To life!)',heb:'לְחַיִּים!',ph:"L'chaim!",note:'Make eye contact when clinking glasses. Very important in Israel.'},
+      {en:'Congratulations!',heb:'מַזָּל טוֹב!',ph:'Mazal tov!',note:'Birthdays, weddings, achievements — all occasions.'},
+      {en:'No problem',heb:'אֵין בְּעָיָה',ph:'Ein baya',note:'The Israeli "no worries". You\'ll hear this constantly.'},
+      {en:'What a pity',heb:'חֲבָל',ph:'Chaval',note:'"Chaval al ha-zman" = not worth your time (or sarcastically: amazing!).'},
+      {en:'Amazing / Excellent',heb:'מְצֻיָּן',ph:'Metzuyan',note:'Express genuine enthusiasm — Israelis appreciate directness.'},
+      {en:'Let\'s go! / Come on!',heb:'יַאַלָּה!',ph:'Yalla!',note:'Borrowed from Arabic. THE most-used casual expression in Israel.'},
+      {en:'Cool / Great',heb:'סַבָּבָה',ph:'Sababa',note:'Also from Arabic. Extremely common casual slang.'},
+      {en:'Really? / No way!',heb:'וַוַלָּה?',ph:'Walla?',note:'Express surprise, affirmation, or disbelief. Used constantly.'},
+    ]},
+    { title:'Shabbat & Religion', desc:'Judaism shapes daily life. Know when things close and what to say.', words:[
+      {en:'Shabbat Shalom',heb:'שַׁבָּת שָׁלוֹם',ph:'Shabbat Shalom',note:'Fri sundown to Sat night. Most shops close, buses stop in most cities. Plan ahead.'},
+      {en:'Good holiday',heb:'חַג שָׂמֵחַ',ph:'Chag sameach',note:'For all Jewish holidays — Passover, Rosh Hashana, etc.'},
+      {en:'Synagogue',heb:'בֵּית כְּנֶסֶת',ph:'Beit knesset',note:'Literally "house of gathering".'},
+      {en:'Holy / Sacred',heb:'קָדוֹשׁ',ph:'Kadosh',note:'Important concept — many sites across Israel are considered kadosh.'},
+      {en:'Western Wall',heb:'הַכֹּתֶל',ph:'Ha-Kotel',note:'Simply "the Wall". Dress modestly — shoulders and knees covered.'},
+      {en:'Modest dress required',heb:'צְנִיעוּת',ph:"Tzniyut",note:'Required at holy sites. Women: covered shoulders and knees; men: covered head.'},
+      {en:'Prayer',heb:'תְּפִלָּה',ph:'Tefila',note:'You\'ll witness prayer at the Wall and other holy sites.'},
+      {en:'Donation / Charity',heb:'צְדָקָה',ph:'Tzedaka',note:'Giving is a core value. You\'ll see donation boxes everywhere.'},
+    ]},
+  ]},
+  { id:'emergency', icon:'🆘', title:'Safety & Emergency', desc:'Phrases you hope to never need. Know them cold anyway.', lessons:[
+    { title:'Emergency Phrases', desc:'Help, police, doctor, hospital — be prepared.', words:[
+      {en:'Help!',heb:'עֶזְרָה!',ph:'Ezra!',note:'Shout loudly. Israelis respond immediately to strangers in distress.'},
+      {en:'Call the police!',heb:'תִּקְרָא לַמִּשְׁטָרָה!',ph:'Tikra la-mishtara!',note:'Police: 100. Ambulance: 101. Fire: 102.'},
+      {en:'I need a doctor',heb:'אֲנִי צָרִיךְ רוֹפֵא',ph:'Ani tzarich rofe',note:'Israeli hospitals have English-speaking staff in major cities.'},
+      {en:'Hospital',heb:'בֵּית חוֹלִים',ph:'Beit cholim',note:'World-class medical care. Don\'t hesitate to go.'},
+      {en:'I\'m lost',heb:'אֲנִי אָבוּד',ph:'Ani avud',note:'Israelis are very willing to stop and help lost tourists.'},
+      {en:'My X was stolen',heb:'גָּנְבוּ לִי אֶת…',ph:'Ganvu li et…',note:'"Ganvu li et ha-darkon" = my passport was stolen. Go to police immediately.'},
+      {en:'I\'m not feeling well',heb:'אֲנִי לֹא מַרְגִּישׁ טוֹב',ph:'Ani lo margish tov',note:'Masc: margish. Fem: margishah tov.'},
+      {en:'Pharmacy',heb:'בֵּית מִרְקַחַת',ph:'Beit mirqachat',note:'Look for the green cross sign. Open long hours in cities.'},
+    ]},
+  ]},
+  { id:'maccabi', icon:'🏅', title:'Maccabi Games', desc:'Sports vocabulary, youth athletes, and logistics for the Games.', lessons:[
+    { title:'Sports & Competition', desc:'Cheer, encourage, and talk sport in Hebrew.', words:[
+      {en:'Game / Match',heb:'מִשְׂחָק',ph:'Miskhak',note:'Both "game" and "play" come from this root.'},
+      {en:'Team',heb:'קְבוּצָה',ph:'Kvutza',note:'Also means a group or kibbutz work team.'},
+      {en:'Athlete / Player',heb:'שַׂחְקָן',ph:'Sachkan',note:'From the root for "play".'},
+      {en:'Coach / Trainer',heb:'מְאַמֵּן',ph:"Me'amen",note:''},
+      {en:'Victory / Win',heb:'נִצָּחוֹן',ph:'Nitsachon',note:'"Nitsachon!" is a great victory cheer.'},
+      {en:'Goal / Score',heb:'שַׁעַר',ph:"Sha'ar",note:'Also means "gate" or "door" — same word.'},
+      {en:'Well done! / Bravo!',heb:'כׇּל הַכָּבוֹד!',ph:'Kol hakavod!',note:'Literally "all the honor". The ultimate Israeli compliment.'},
+      {en:'Good luck!',heb:'הַצְלָחָה!',ph:'Hatzlacha!',note:'Wish this to your athletes before a match. Very heartfelt.'},
+    ]},
+    { title:'Youth & Logistics', desc:'Managing athletes, schedules, and group coordination.', words:[
+      {en:'Schedule / Timetable',heb:'לוּחַ זְמַנִּים',ph:'Luach zmanim',note:'Essential for managing the Games programme.'},
+      {en:'Meeting point',heb:'נְקֻדַּת מִפְגָּשׁ',ph:'Nekudat mifgash',note:'Set a clear meeting point for every excursion.'},
+      {en:'Meal / Food',heb:'אֲרוּחָה',ph:'Arukha',note:'Arukhat boker = breakfast. Arukhat erev = dinner.'},
+      {en:'Room / Accommodation',heb:'חֶדֶר',ph:'Cheder',note:'Cheder = room. You\'ll need this for hotel logistics.'},
+      {en:'Emergency / Urgent',heb:'דְּחִיפוּת',ph:'Dchifut',note:'"Dachuf" = urgent in adjective form.'},
+      {en:'Parent / Guardian',heb:'הוֹרֶה',ph:'Hore',note:'Horim = parents (plural). Essential for liaising.'},
+      {en:'Welcome!',heb:'בְּרוּכִים הַבָּאִים!',ph:"Bruchim haba'im!",note:'The formal welcome phrase. Very meaningful to say in Hebrew.'},
+      {en:'Thank you for everything',heb:'תּוֹדָה עַל הַכֹּל',ph:'Toda al hakol',note:'A genuine and impactful phrase for hosts and coordinators.'},
+    ]},
+  ]},
+  { id:'slang', icon:'😎', title:'Slang & Street Hebrew', desc:'Sound like a local — the words that reveal you\'ve been paying attention.', lessons:[
+    { title:'Arabic Loanwords', desc:'Half of Israeli slang comes from Arabic. These are non-negotiable.', words:[
+      {en:'Let\'s go / Come on',heb:'יַאַלָּה',ph:'Yalla',note:'"Yalla bye" = the Israeli phone call goodbye. Said dozens of times per day.'},
+      {en:'Really? / Wow',heb:'וַוַלָּה',ph:'Walla',note:'Rising tone = really? Flat tone = wow/seriously.'},
+      {en:'Cool / Great / Chill',heb:'סַבָּבָה',ph:'Sababa',note:'Everything relaxed and good is sababa.'},
+      {en:'Welcome / Hello (casual)',heb:'אַהְלָן',ph:'Ahlan',note:'Warm, informal hello. Very common.'},
+      {en:'Done / Finished',heb:'יַאַלָּה בַּאי',ph:'Yalla bye',note:'Universal Israeli phone call ender.'},
+      {en:'Whatever / Nonsense',heb:'וַואי',ph:'Wai',note:'Dismissive, like "whatever" or "come on".'},
+      {en:'Friend (Arabic slang)',heb:'חַבִּיבִּי',ph:'Habibi',note:'Literally "my love" but used as "friend/buddy". Very common.'},
+      {en:'Everything\'s fine',heb:'הַכֹּל בְּסֵדֶר',ph:"Hakol b'seder",note:'Ultimate reassurance phrase. Use when someone\'s worried.'},
+    ]},
+    { title:'Pure Israeli Expressions', desc:'The words that reveal you\'ve been paying close attention.', words:[
+      {en:'Specifically / Of all things',heb:'דַּוְקָא',ph:'Davka',note:'Untranslatable but everywhere. "He davka came late" = he came late, of all things.'},
+      {en:'The situation / How things are',heb:'מַצָּב',ph:'Matsav',note:'"Ma ha-matsav?" = what\'s the situation? / how are things?'},
+      {en:'No pressure / no stress',heb:'אֵין לַחַץ',ph:'Ein lachatz',note:'Very common reassurance. Lachatz = pressure/stress.'},
+      {en:'Crazy / Insane (good)',heb:'מְטוֹרָף',ph:'Metsoraf',note:'"Ze metsoraf!" = that\'s insane/awesome!'},
+      {en:'Listen up / Hey',heb:'תִּשְׁמַע',ph:'Tishma',note:'Literally "listen" but used to start any sentence, like "hey" or "look".'},
+      {en:'Annoying',heb:'מַרְגִּיז',ph:'Margiz',note:'"Ze margiz oti" = that\'s annoying me.'},
+      {en:'Worth it / What a waste',heb:'כְּדַאי / לֹא כְּדַאי',ph:"Kedai / Lo kedai",note:'"Kedai!" = it\'s worth it! "Lo kedai" = not worth it.'},
+      {en:'All the honor / Well done',heb:'כׇּל הַכָּבוֹד',ph:'Kol hakavod',note:'The highest compliment. Use it generously — it\'s always welcome.'},
+    ]},
+  ]},
+];
+
+const ALPHABET = [
+  {l:'א',n:'Aleph',s:'silent',d:'Silent — acts as a vowel carrier. Starts many words. The "silent" foundation of the language.'},
+  {l:'בּ',n:'Bet / Vet',s:'b / v',d:'With a dot (dagesh): "b" as in bat. Without: "v" as in vet. Two sounds, one letter.'},
+  {l:'ג',n:'Gimel',s:'g',d:'Hard "g" as in "go". Never soft like "gem".'},
+  {l:'ד',n:'Dalet',s:'d',d:'Simple "d" like "door".'},
+  {l:'ה',n:'He',s:'h',d:'Soft "h". Often silent at word end — marks feminine nouns.'},
+  {l:'ו',n:'Vav',s:'v / o / u',d:'As consonant: "v". As vowel: "o" or "u". Very common — appears in most words.'},
+  {l:'ז',n:'Zayin',s:'z',d:'"z" like "zebra". Straightforward.'},
+  {l:'ח',n:'Chet',s:'ch (guttural)',d:'Guttural "ch" — back of throat, like German "Bach". One of the key Hebrew sounds.'},
+  {l:'ט',n:'Tet',s:'t',d:'Emphatic "t". In modern Hebrew sounds like regular Tav.'},
+  {l:'י',n:'Yod',s:'y',d:'Smallest letter. "y" like "yes". Also acts as a vowel for the "ee" sound.'},
+  {l:'כ',n:'Kaf / Khaf',s:'k / kh',d:'With dot: hard "k". Without: soft "kh" like "Bach". Has a final form ך used at word end.'},
+  {l:'ל',n:'Lamed',s:'l',d:'"l" sound. Tallest letter in the alphabet — easy to spot.'},
+  {l:'מ',n:'Mem',s:'m',d:'"m" sound. Has a final form ם used at word end.'},
+  {l:'נ',n:'Nun',s:'n',d:'"n" sound. Has a final form ן used at word end.'},
+  {l:'ס',n:'Samekh',s:'s',d:'"s" sound. In modern Hebrew same as Sin (שׂ).'},
+  {l:'ע',n:'Ayin',s:'silent/guttural',d:'Originally a guttural stop. Modern Israeli Hebrew: mostly silent, like Aleph. Some speakers still use a slight throat sound.'},
+  {l:'פ',n:'Pe / Fe',s:'p / f',d:'With dot: "p". Without: "f". Has a final form ף at word end.'},
+  {l:'צ',n:'Tzadi',s:'tz',d:'"tz" like "pizza". Appears in "matzah", "kibbutz". Has a final form ץ.'},
+  {l:'ק',n:'Kof',s:'k',d:'Hard "k". Similar to Kaf with dot.'},
+  {l:'ר',n:'Resh',s:'r (guttural)',d:'French-style guttural "r" — made in the throat. The hardest sound for English speakers.'},
+  {l:'שׁ',n:'Shin / Sin',s:'sh / s',d:'Right dot: "sh" (shin). Left dot: "s" (sin). Dot placement is crucial — different sounds.'},
+  {l:'ת',n:'Tav',s:'t',d:'"t" sound in modern Hebrew.'},
+];
+
+// ══════════════════════════════════════════════
+// MASTERY / SPACED REPETITION ENGINE
+// ══════════════════════════════════════════════
+// Each word record: { attempts, correct, lastSeen, avgResponseMs, streak, easeFactor, interval, nextDue }
+// Mastery levels: unseen → weak (acc<50%) → mid (50-79%) → known (80-94%, or ≥3 correct) → mastered (acc≥95% AND avgMs<4000)
+
+let WR = {}; // word records keyed by `${catId}:${lessonIdx}:${wordIdx}`
+
+function wkey(catIdx, lessonIdx, wordIdx) {
+  return `${CURRICULUM[catIdx].id}:${lessonIdx}:${wordIdx}`;
+}
+
+function getWR(catIdx, lessonIdx, wordIdx) {
+  const k = wkey(catIdx, lessonIdx, wordIdx);
+  if (!WR[k]) WR[k] = { attempts:0, correct:0, lastSeen:null, responseTimes:[], streak:0, interval:1, ease:2.5, nextDue:null };
+  return WR[k];
+}
+
+function recordAnswer(catIdx, lessonIdx, wordIdx, isCorrect, responseMs, grade) {
+  const r = getWR(catIdx, lessonIdx, wordIdx);
+  r.attempts++;
+  r.lastSeen = Date.now();
+  r.responseTimes.push(Math.min(responseMs, 30000));
+  if (r.responseTimes.length > 20) r.responseTimes.shift();
+  if (isCorrect) {
+    r.correct++;
+    r.streak++;
+  } else {
+    r.streak = 0;
+  }
+  // SM-2 lite interval scheduling
+  const gradeMap = { again:0, hard:2, good:4, easy:5 };
+  const q = gradeMap[grade] ?? (isCorrect ? 4 : 0);
+  r.ease = Math.max(1.3, r.ease + 0.1 - (5-q)*(0.08 + (5-q)*0.02));
+  if (q < 3) {
+    r.interval = 1;
+    r.streak = 0;
+  } else if (r.interval === 1) {
+    r.interval = q === 5 ? 4 : 3;
+  } else if (r.interval < 4) {
+    r.interval = 6;
+  } else {
+    r.interval = Math.round(r.interval * r.ease);
+  }
+  r.nextDue = Date.now() + r.interval * 24 * 3600 * 1000;
+  saveData();
+}
+
+function masteryLevel(r) {
+  if (!r || r.attempts === 0) return 'unseen';
+  const acc = r.correct / r.attempts;
+  const avgMs = r.responseTimes.length ? r.responseTimes.reduce((a,b)=>a+b,0)/r.responseTimes.length : 99999;
+  if (acc >= 0.95 && avgMs < 5000 && r.correct >= 4) return 'mastered';
+  if (acc >= 0.80 && r.correct >= 3) return 'known';
+  if (acc >= 0.50) return 'mid';
+  return 'weak';
+}
+
+function isDue(r) {
+  if (!r || r.attempts === 0) return false;
+  if (!r.nextDue) return true;
+  return Date.now() >= r.nextDue;
+}
+
+// ══════════════════════════════════════════════
+// PERSISTENCE
+// ══════════════════════════════════════════════
+let lessonsDone = {}; // key: `${catIdx}-${lessonIdx}` -> true
+let sessionLog = []; // recent session timestamps
+let streakData = { lastDate: null, days: 0 };
+
+function saveData() {
+  try {
+    localStorage.setItem('heb_wr', JSON.stringify(WR));
+    localStorage.setItem('heb_done', JSON.stringify(lessonsDone));
+    localStorage.setItem('heb_streak', JSON.stringify(streakData));
+  } catch(e) {}
+}
+
+function loadData() {
+  try {
+    const wr = localStorage.getItem('heb_wr'); if (wr) WR = JSON.parse(wr);
+    const d = localStorage.getItem('heb_done'); if (d) lessonsDone = JSON.parse(d);
+    const s = localStorage.getItem('heb_streak'); if (s) streakData = JSON.parse(s);
+  } catch(e) {}
+}
+
+function markLessonDone(ci, li) {
+  lessonsDone[`${ci}-${li}`] = Date.now();
+  // update streak
+  const today = new Date().toDateString();
+  if (streakData.lastDate !== today) {
+    const yesterday = new Date(Date.now()-86400000).toDateString();
+    streakData.days = streakData.lastDate === yesterday ? streakData.days + 1 : 1;
+    streakData.lastDate = today;
+  }
+  saveData();
+}
+
+function isLessonDone(ci, li) { return !!lessonsDone[`${ci}-${li}`]; }
+
+function allWordStats() {
+  let total=0, mastered=0, known=0, mid=0, weak=0, unseen=0;
+  CURRICULUM.forEach((cat,ci) => cat.lessons.forEach((les,li) => les.words.forEach((_,wi) => {
+    total++;
+    const r = WR[wkey(ci,li,wi)];
+    const m = masteryLevel(r);
+    if(m==='mastered') mastered++;
+    else if(m==='known') known++;
+    else if(m==='mid') mid++;
+    else if(m==='weak') weak++;
+    else unseen++;
+  })));
+  return {total, mastered, known, mid, weak, unseen};
+}
+
+function dueWords() {
+  const out = [];
+  CURRICULUM.forEach((cat,ci) => cat.lessons.forEach((les,li) => les.words.forEach((w,wi) => {
+    const r = WR[wkey(ci,li,wi)];
+    if (isDue(r)) out.push({w,ci,li,wi,r});
+  })));
+  return out;
+}
+
+// ══════════════════════════════════════════════
+// NAVIGATION STATE
+// ══════════════════════════════════════════════
+let curCat = 0, curLesson = 0;
+
+function showScreen(id) {
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('complete-overlay').classList.remove('show');
+}
+
+// ══════════════════════════════════════════════
+// HOME
+// ══════════════════════════════════════════════
+function showHome() {
+  loadData();
+  showScreen('home');
+  renderHome();
+}
+
+function renderHome() {
+  const stats = allWordStats();
+  const done = Object.keys(lessonsDone).length;
+  document.getElementById('hs-lessons').textContent = done;
+  document.getElementById('hs-mastered').textContent = stats.mastered;
+  document.getElementById('hs-weak').textContent = stats.weak + stats.mid;
+  document.getElementById('hs-streak').textContent = streakData.days > 0 ? '🔥' + streakData.days : '–';
+
+  // review banner
+  const due = dueWords();
+  const rb = document.getElementById('review-banner');
+  if (due.length > 0) {
+    rb.style.display = 'block';
+    document.getElementById('rb-count-text').textContent = `${due.length} word${due.length>1?'s':''} ready for review based on your history`;
+  } else {
+    rb.style.display = 'none';
+  }
+
+  // cat grid
+  const grid = document.getElementById('cat-grid');
+  grid.innerHTML = '';
+  CURRICULUM.forEach((cat, ci) => {
+    const total = cat.lessons.length;
+    const done = cat.lessons.filter((_,li) => isLessonDone(ci,li)).length;
+    const pct = total ? Math.round(done/total*100) : 0;
+    const el = document.createElement('div');
+    el.className = 'cat-card fadeIn' + (done===total ? ' all-done' : '');
+    el.innerHTML = `
+      <span class="cat-badge-done">✓ Complete</span>
+      <span class="cat-icon">${cat.icon}</span>
+      <div class="cat-title">${cat.title}</div>
+      <div class="cat-desc">${cat.desc}</div>
+      <div class="cat-footer">
+        <span class="cat-count">${done}/${total} lessons</span>
+        <div class="cat-pbar"><div class="cat-pfill" style="width:${pct}%"></div></div>
+      </div>`;
+    el.onclick = () => showCategory(ci);
+    grid.appendChild(el);
+  });
+}
+
+// ══════════════════════════════════════════════
+// CATEGORY
+// ══════════════════════════════════════════════
+function showCategory(ci) {
+  curCat = ci;
+  const cat = CURRICULUM[ci];
+  document.getElementById('cat-title-el').textContent = cat.icon + '  ' + cat.title;
+  document.getElementById('cat-sub-el').textContent = cat.desc;
+  showScreen('category-screen');
+
+  const list = document.getElementById('lessons-list');
+  list.innerHTML = '';
+  cat.lessons.forEach((les, li) => {
+    const done = isLessonDone(ci, li);
+    const row = document.createElement('div');
+    row.className = 'lesson-row fadeIn' + (done ? ' done' : '');
+
+    // compute mastery dots
+    const dots = les.words.map((_,wi) => {
+      const m = masteryLevel(WR[wkey(ci,li,wi)]);
+      return m;
+    });
+    const dotsHtml = dots.map(m => {
+      const cls = m==='mastered'?'mdot known':m==='known'?'mdot known':m==='mid'?'mdot mid':m==='weak'?'mdot weak':'mdot';
+      return `<div class="${cls}" title="${m}"></div>`;
+    }).join('');
+
+    const tagClass = done ? 'tag-done' : 'tag-new';
+    const tagLabel = done ? '✓ Done' : 'Start';
+
+    row.innerHTML = `
+      <div class="lesson-num">${done ? '✓' : li+1}</div>
+      <div>
+        <div class="lesson-info-title">${les.title}</div>
+        <div class="lesson-info-desc">${les.desc} · ${les.words.length} words</div>
+        <div class="lesson-mastery-dots">${dotsHtml}</div>
+      </div>
+      <span class="tag ${tagClass}">${tagLabel}</span>`;
+    row.onclick = () => showLesson(ci, li);
+    list.appendChild(row);
+  });
+}
+
+// ══════════════════════════════════════════════
+// LESSON
+// ══════════════════════════════════════════════
+function showLesson(ci, li) {
+  curCat = ci; curLesson = li;
+  const les = CURRICULUM[ci].lessons[li];
+  document.getElementById('l-breadcrumb').textContent = CURRICULUM[ci].title + ' › Lesson ' + (li+1);
+  document.getElementById('l-title').textContent = les.title;
+  showScreen('lesson-screen');
+  // reset tabs
+  document.querySelectorAll('.phase-tab').forEach(t => t.classList.remove('active','tab-done'));
+  document.getElementById('tab-learn').classList.add('active');
+  goPhase('learn', document.getElementById('tab-learn'));
+}
+
+function goBackFromLesson() { showCategory(curCat); }
+
+function setLP(pct) {
+  document.getElementById('lp-fill').style.width = pct + '%';
+  document.getElementById('lp-pct').textContent = pct + '%';
+}
+
+function goPhase(phase, tabEl) {
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.phase-tab').forEach(t => { if(!t.classList.contains('tab-done')) t.classList.remove('active'); });
+  tabEl.classList.add('active');
+  document.querySelectorAll('.phase-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('pane-' + phase).classList.add('active');
+  if (phase==='learn') { buildLearn(); setLP(15); }
+  else if (phase==='flash') { buildFlash(); setLP(50); }
+  else if (phase==='quiz') { buildQuiz(); setLP(75); }
+}
+
+// ══════════════════════════════════════════════
+// LEARN PHASE
+// ══════════════════════════════════════════════
+function buildLearn() {
+  const les = CURRICULUM[curCat].lessons[curLesson];
+  const wrap = document.getElementById('learn-cards');
+  wrap.innerHTML = '';
+  les.words.forEach((w, wi) => {
+    const m = masteryLevel(WR[wkey(curCat, curLesson, wi)]);
+    const showBadge = m !== 'unseen';
+    const badgeLabel = m === 'mastered' ? '⚡ Mastered' : m === 'known' ? '✓ Known' : m === 'mid' ? '~ Learning' : m === 'weak' ? '✕ Needs Work' : '';
+    const badgeClass = m === 'mastered' ? 'mastered' : m === 'known' ? 'known' : m === 'weak' ? 'weak' : '';
+
+    const card = document.createElement('div');
+    card.className = 'word-card';
+    const safeHeb = w.heb.replace(/'/g,"\\'");
+    card.innerHTML = `
+      <div class="wc-mastery ${badgeClass}${showBadge?' show':''}">${badgeLabel}</div>
+      <div class="wc-main">
+        <span class="wc-en">${w.en}</span>
+        <span class="wc-heb">${w.heb}</span>
+        <button class="spk" onclick="event.stopPropagation();speakHeb('${safeHeb}',this)">🔊</button>
+        <span class="wc-ph">${w.ph}</span>
+      </div>
+      ${w.note ? `<div class="wc-note">${w.note}</div>` : ''}`;
+    if (w.note) {
+      card.querySelector('.wc-main').addEventListener('click', () => card.classList.toggle('expanded'));
+    }
+    wrap.appendChild(card);
+  });
+  document.getElementById('lf-info').textContent = `${les.words.length} words · Tap any card for context · Then practice →`;
+}
+
+// ══════════════════════════════════════════════
+// FLASHCARD PHASE — with two-way flip & grading
+// ══════════════════════════════════════════════
+let fcDeck = [];
+let fcIdx = 0;
+let fcShowing = 'front'; // 'front' | 'back'
+let fcGood = 0, fcAgain = 0, fcFast = 0;
+let fcCardStartTime = 0;
+let fcFlipTime = 0;
+let currentCard = null;
+
+function buildFlash() {
+  const les = CURRICULUM[curCat].lessons[curLesson];
+  // Prioritize weak/mid words first, then others
+  const indexed = les.words.map((w,wi) => ({w, wi, m: masteryLevel(WR[wkey(curCat,curLesson,wi)])}));
+  const weak = indexed.filter(x => x.m==='weak'||x.m==='mid'||x.m==='unseen');
+  const rest = indexed.filter(x => x.m==='known'||x.m==='mastered');
+  fcDeck = [...weak.sort(()=>Math.random()-.5), ...rest.sort(()=>Math.random()-.5)];
+  fcIdx = 0; fcGood = 0; fcAgain = 0; fcFast = 0;
+  fcShowing = 'front';
+  loadFCCard();
+}
+
+function loadFCCard() {
+  if (fcIdx >= fcDeck.length) {
+    // deck done → prompt quiz
+    document.getElementById('fc-word-en').textContent = '🎉 All done!';
+    document.getElementById('fc-word-heb').textContent = '';
+    document.getElementById('fc-word-ph').textContent = '';
+    document.getElementById('fc-word-note').textContent = '';
+    const scene = document.getElementById('fc-scene');
+    scene.className = 'fc-card-scene show-front';
+    document.getElementById('fc-btn-row').innerHTML = '<button class="btn btn-primary" onclick="goPhase(\'quiz\',document.getElementById(\'tab-quiz\'))">Take the Quiz →</button>';
+    document.getElementById('fc-grade-row').classList.add('hidden');
+    document.getElementById('fc-hint-text').textContent = 'Flashcards complete!';
+    updateFCStats();
+    return;
+  }
+  const item = fcDeck[fcIdx];
+  currentCard = item.w;
+  fcShowing = 'front';
+  fcCardStartTime = Date.now();
+  fcFlipTime = 0;
+
+  document.getElementById('fc-word-en').textContent = item.w.en;
+  document.getElementById('fc-word-heb').textContent = item.w.heb;
+  document.getElementById('fc-word-ph').textContent = item.w.ph;
+  document.getElementById('fc-word-note').textContent = item.w.note || '';
+  document.getElementById('fc-spk-btn').classList.remove('playing');
+
+  // show front
+  const scene = document.getElementById('fc-scene');
+  scene.className = 'fc-card-scene show-front';
+
+  document.getElementById('fc-btn-row').classList.remove('hidden');
+  document.getElementById('fc-grade-row').classList.add('hidden');
+  document.getElementById('fc-hint-text').textContent = 'Tap card or "Flip Card" to see Hebrew';
+  document.getElementById('fc-prev-btn').disabled = fcIdx === 0;
+  document.getElementById('fc-speed-display').textContent = '';
+  updateFCStats();
+}
+
+function updateFCStats() {
+  const les = CURRICULUM[curCat].lessons[curLesson];
+  document.getElementById('fc-s-good').textContent = fcGood;
+  document.getElementById('fc-s-again').textContent = fcAgain;
+  document.getElementById('fc-s-left').textContent = Math.max(0, fcDeck.length - fcIdx);
+  document.getElementById('fc-s-fast').textContent = fcFast;
+  const prog = fcDeck.length ? Math.round(fcIdx / fcDeck.length * 100) : 0;
+  document.getElementById('fc-prog-fill').style.width = prog + '%';
+  document.getElementById('fc-prog-label').textContent = `Card ${Math.min(fcIdx+1, fcDeck.length)} of ${fcDeck.length}`;
+}
+
+function handleCardClick() {
+  if (fcShowing === 'front') { fcFlip(); }
+  else { fcFlipBack(); }
+}
+
+function fcFlip() {
+  if (fcIdx >= fcDeck.length) return;
+  fcShowing = 'back';
+  fcFlipTime = Date.now();
+  document.getElementById('fc-scene').className = 'fc-card-scene show-back';
+  document.getElementById('fc-btn-row').classList.add('hidden');
+  document.getElementById('fc-grade-row').classList.remove('hidden');
+  document.getElementById('fc-hint-text').textContent = 'Tap card again to flip back · Rate yourself below';
+  // auto-speak
+  setTimeout(() => { speakHeb(currentCard.heb, document.getElementById('fc-spk-btn')); }, 320);
+  // show speed hint
+  const elapsed = Date.now() - fcCardStartTime;
+  const speedClass = elapsed < 3000 ? 'speed-fast' : elapsed < 8000 ? 'speed-normal' : 'speed-slow';
+  const speedLabel = elapsed < 3000 ? '⚡ Fast response' : elapsed < 8000 ? 'Normal pace' : 'Take your time';
+  document.getElementById('fc-speed-display').innerHTML = `<span class="speed-badge ${speedClass}">${speedLabel}</span>`;
+}
+
+function fcFlipBack() {
+  fcShowing = 'front';
+  document.getElementById('fc-scene').className = 'fc-card-scene show-front';
+  document.getElementById('fc-btn-row').classList.remove('hidden');
+  document.getElementById('fc-grade-row').classList.add('hidden');
+  document.getElementById('fc-hint-text').textContent = 'Tap card or "Flip Card" to see Hebrew';
+  window.speechSynthesis.cancel();
+}
+
+function fcSkip() {
+  if (fcIdx >= fcDeck.length) return;
+  fcIdx++;
+  fcShowing = 'front';
+  loadFCCard();
+}
+
+function fcPrev() {
+  if (fcIdx <= 0) return;
+  fcIdx--;
+  fcShowing = 'front';
+  loadFCCard();
+}
+
+function fcGrade(grade) {
+  if (fcIdx >= fcDeck.length) return;
+  const item = fcDeck[fcIdx];
+  const responseMs = fcFlipTime ? Date.now() - fcFlipTime : Date.now() - fcCardStartTime;
+  const totalMs = Date.now() - fcCardStartTime;
+  const isCorrect = grade !== 'again';
+  const isFast = totalMs < 3500 && isCorrect;
+
+  if (isCorrect) fcGood++;
+  else fcAgain++;
+  if (isFast) fcFast++;
+
+  recordAnswer(curCat, curLesson, item.wi, isCorrect, totalMs, grade);
+  fcIdx++;
+  loadFCCard();
+}
+
+// ══════════════════════════════════════════════
+// QUIZ PHASE
+// ══════════════════════════════════════════════
+let quizWords = [];
+let quizIdx = 0;
+let quizGood = 0, quizBad = 0, quizFast = 0;
+let quizStreak = 0;
+let quizMaxStreak = 0;
+let quizWeakWords = [];
+let currentQuizWord = null;
+let quizStartTime = 0;
+let timerInterval = null;
+const QUIZ_TIME_MS = 12000;
+
+function buildQuiz() {
+  const les = CURRICULUM[curCat].lessons[curLesson];
+  quizWords = [...les.words].sort(() => Math.random() - 0.5);
+  quizIdx = 0; quizGood = 0; quizBad = 0; quizFast = 0;
+  quizStreak = 0; quizMaxStreak = 0; quizWeakWords = [];
+  renderQuiz();
+}
+
+function renderQuiz() {
+  clearInterval(timerInterval);
+  if (quizIdx >= quizWords.length) { showComplete(); return; }
+
+  const correct = quizWords[quizIdx];
+  currentQuizWord = correct;
+  quizStartTime = Date.now();
+
+  // direction: 60% heb→en, 40% en→heb
+  const showHeb = Math.random() > 0.4;
+  const allWords = CURRICULUM.flatMap((c,ci) => c.lessons.flatMap((l,li) => l.words.map((w,wi) => ({w,ci,li,wi}))));
+  const pool = allWords.filter(x => x.w !== correct).sort(()=>Math.random()-.5).slice(0,3).map(x=>x.w);
+  const answers = [correct, ...pool].sort(() => Math.random() - 0.5);
+
+  document.getElementById('q-num').textContent = `Question ${quizIdx+1} of ${quizWords.length}`;
+  document.getElementById('q-streak').innerHTML = quizStreak >= 2 ? `🔥 ${quizStreak} streak` : '';
+
+  const dir = document.getElementById('q-dir');
+  const word = document.getElementById('q-word');
+  const spk = document.getElementById('q-spk');
+
+  if (showHeb) {
+    dir.textContent = 'What does this mean in English?';
+    word.innerHTML = `<div class="quiz-word-heb">${correct.heb}</div>`;
+    spk.style.display = 'inline-flex';
+    spk.onclick = () => speakHeb(correct.heb, spk);
+    setTimeout(() => speakHeb(correct.heb, null), 200);
+  } else {
+    dir.textContent = 'Choose the Hebrew translation:';
+    word.innerHTML = `<div class="quiz-word-en">${correct.en}</div>`;
+    spk.style.display = 'none';
+  }
+
+  const opts = document.getElementById('q-opts');
+  opts.innerHTML = '';
+  answers.forEach(a => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = showHeb ? a.en : (a.heb + ' · ' + a.ph);
+    btn.onclick = () => handleQuizAnswer(a, correct, btn, showHeb);
+    opts.appendChild(btn);
+  });
+
+  document.getElementById('q-fb').className = 'quiz-fb';
+  document.getElementById('q-fb').innerHTML = '';
+  document.getElementById('q-next').style.display = 'none';
+
+  // timer bar
+  const fill = document.getElementById('q-timer-fill');
+  fill.style.transition = 'none';
+  fill.style.width = '100%';
+  requestAnimationFrame(() => {
+    fill.style.transition = `width ${QUIZ_TIME_MS}ms linear`;
+    fill.style.width = '0%';
+  });
+  timerInterval = setTimeout(() => {
+    // time's up — count as wrong
+    handleQuizAnswer(null, correct, null, showHeb);
+  }, QUIZ_TIME_MS);
+}
+
+function handleQuizAnswer(chosen, correct, btn, showHeb) {
+  clearInterval(timerInterval);
+  const responseMs = Date.now() - quizStartTime;
+  const isCorrect = chosen === correct;
+  const wi = CURRICULUM[curCat].lessons[curLesson].words.indexOf(correct);
+  const isFast = responseMs < 3500 && isCorrect;
+
+  document.querySelectorAll('.quiz-opt').forEach(b => b.disabled = true);
+
+  // highlight correct
+  document.querySelectorAll('.quiz-opt').forEach(b => {
+    const isThisCorrect = showHeb ? b.textContent === correct.en : b.textContent === (correct.heb + ' · ' + correct.ph);
+    if (isThisCorrect) b.classList.add('correct');
+  });
+  if (btn && !isCorrect) btn.classList.add('wrong');
+
+  const fb = document.getElementById('q-fb');
+  if (isCorrect) {
+    quizGood++;
+    quizStreak++;
+    if (quizStreak > quizMaxStreak) quizMaxStreak = quizStreak;
+    if (isFast) quizFast++;
+    fb.className = 'quiz-fb show good';
+    const speedNote = isFast ? ' ⚡ Fast!' : '';
+    fb.innerHTML = `✓ Correct!${speedNote} &nbsp; <em>${correct.ph}</em> — ${correct.en} &nbsp; <button class="spk" onclick="speakHeb('${correct.heb.replace(/'/g,"\\'")}',this)">🔊</button>`;
+  } else {
+    quizBad++;
+    quizStreak = 0;
+    quizWeakWords.push(correct);
+    fb.className = 'quiz-fb show bad';
+    const reason = !chosen ? '⏱ Time\'s up!' : '✕ Not quite.';
+    fb.innerHTML = `${reason} &nbsp; <strong>${correct.heb}</strong> &nbsp; <em>${correct.ph}</em> — "${correct.en}" &nbsp; <button class="spk" onclick="speakHeb('${correct.heb.replace(/'/g,"\\'")}',this)">🔊</button>`;
+  }
+
+  if (wi >= 0) recordAnswer(curCat, curLesson, wi, isCorrect, responseMs, isCorrect ? (isFast ? 'easy' : 'good') : 'again');
+
+  document.getElementById('q-next').style.display = 'block';
+  quizIdx++;
+}
+
+function nextQuiz() { renderQuiz(); }
+
+// ══════════════════════════════════════════════
+// COMPLETE
+// ══════════════════════════════════════════════
+function showComplete() {
+  markLessonDone(curCat, curLesson);
+  setLP(100);
+  document.getElementById('tab-quiz').classList.add('tab-done');
+
+  const total = quizGood + quizBad;
+  const pct = total ? Math.round(quizGood/total*100) : 0;
+  const les = CURRICULUM[curCat].lessons[curLesson];
+
+  document.getElementById('c-correct').textContent = quizGood;
+  document.getElementById('c-missed').textContent = quizBad;
+  document.getElementById('c-fast').textContent = quizFast;
+  document.getElementById('c-words').textContent = les.words.length;
+
+  let trophy='🌟', title='Lesson Complete!', sub='';
+  if (pct===100) { trophy='🏆'; title='Perfect Score!'; sub='Flawless. You crushed every word in this lesson.'; }
+  else if (pct>=80) { trophy='🌟'; sub='Great work! A few words to polish — they\'re noted below.'; }
+  else if (pct>=60) { trophy='📈'; sub='Good effort. Focus on the highlighted words and retry.'; }
+  else { trophy='💪'; title='Keep Practicing!'; sub='This one needs more work. Retry the flashcards, then the quiz again.'; }
+
+  document.getElementById('c-trophy').textContent = trophy;
+  document.getElementById('c-title').textContent = title;
+  document.getElementById('c-sub').textContent = sub;
+
+  // weak word chips
+  const weakSection = document.getElementById('weak-words-section');
+  const chips = document.getElementById('weak-word-chips');
+  chips.innerHTML = '';
+  const unique = [...new Set(quizWeakWords.map(w=>w.heb))].map(h => quizWeakWords.find(w=>w.heb===h));
+  if (unique.length > 0) {
+    weakSection.style.display = 'block';
+    unique.forEach(w => {
+      const chip = document.createElement('div');
+      chip.className = 'weak-word-chip';
+      const safeHeb = w.heb.replace(/'/g,"\\'");
+      chip.innerHTML = `<span class="weak-word-heb">${w.heb}</span><span>${w.en}</span><button class="spk" onclick="event.stopPropagation();speakHeb('${safeHeb}',this)">🔊</button>`;
+      chips.appendChild(chip);
+    });
+  } else {
+    weakSection.style.display = 'none';
+  }
+
+  document.getElementById('complete-overlay').classList.add('show');
+}
+
+function retryQuiz() {
+  document.getElementById('complete-overlay').classList.remove('show');
+  goPhase('quiz', document.getElementById('tab-quiz'));
+}
+
+function finishLesson() {
+  document.getElementById('complete-overlay').classList.remove('show');
+  showCategory(curCat);
+}
+
+// ══════════════════════════════════════════════
+// REVIEW / PROGRESS DASHBOARD
+// ══════════════════════════════════════════════
+let perfFilter = 'all';
+
+function showReview() {
+  showScreen('review-screen');
+  renderReview();
+}
+
+function renderReview() {
+  renderDue();
+  renderProgBars();
+  renderPerfTable();
+}
+
+function renderDue() {
+  const due = dueWords();
+  const chips = document.getElementById('due-chips');
+  chips.innerHTML = '';
+  document.getElementById('due-sub').textContent = due.length === 0
+    ? 'No words currently due — check back after studying more lessons.'
+    : `${due.length} word${due.length>1?'s':''} need a refresh. Tap any to hear the pronunciation.`;
+
+  if (due.length === 0) {
+    chips.innerHTML = '<span style="color:var(--textm);font-style:italic;font-size:14px">All caught up! 🎉</span>';
+    return;
+  }
+  due.slice(0,30).forEach(({w,ci,li,wi,r}) => {
+    const m = masteryLevel(r);
+    const chip = document.createElement('div');
+    chip.className = 'due-chip';
+    const acc = r.attempts ? Math.round(r.correct/r.attempts*100) : 0;
+    const tagC = m==='weak'?'s-red':m==='mid'?'s-gold':'s-green';
+    const safeHeb = w.heb.replace(/'/g,"\\'");
+    chip.innerHTML = `
+      <span class="due-chip-heb">${w.heb}</span>
+      <div><div class="due-chip-en" style="font-size:13px;color:var(--textd)">${w.en}</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--textm)">${acc}% acc</div></div>
+      <button class="spk" onclick="event.stopPropagation();speakHeb('${safeHeb}',this)">🔊</button>`;
+    chip.onclick = () => { showLesson(ci,li); };
+    chips.appendChild(chip);
+  });
+}
+
+function renderProgBars() {
+  const bars = document.getElementById('prog-bars');
+  bars.innerHTML = '';
+  CURRICULUM.forEach((cat, ci) => {
+    let total=0, score=0;
+    cat.lessons.forEach((les,li) => les.words.forEach((_,wi) => {
+      total++;
+      const m = masteryLevel(WR[wkey(ci,li,wi)]);
+      if(m==='mastered') score+=4;
+      else if(m==='known') score+=3;
+      else if(m==='mid') score+=2;
+      else if(m==='weak') score+=1;
+    }));
+    const pct = total ? Math.round(score/(total*4)*100) : 0;
+    const color = pct>=80?'var(--green)':pct>=50?'var(--gold)':pct>=25?'var(--amber)':'var(--red)';
+    const row = document.createElement('div');
+    row.className = 'prog-row';
+    row.innerHTML = `
+      <span class="prog-label">${cat.icon} ${cat.title}</span>
+      <div class="prog-bar-outer"><div class="prog-bar-inner" style="width:${pct}%;background:${color}"></div></div>
+      <span class="prog-pct">${pct}%</span>`;
+    bars.appendChild(row);
+  });
+}
+
+function filterPerf(filter, btn) {
+  perfFilter = filter;
+  document.querySelectorAll('.pf-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPerfTable();
+}
+
+function renderPerfTable() {
+  const tbody = document.getElementById('perf-tbody');
+  tbody.innerHTML = '';
+  let count = 0;
+
+  CURRICULUM.forEach((cat,ci) => cat.lessons.forEach((les,li) => les.words.forEach((w,wi) => {
+    const k = wkey(ci,li,wi);
+    const r = WR[k];
+    const m = masteryLevel(r);
+
+    if (perfFilter === 'mastered' && m !== 'mastered') return;
+    if (perfFilter === 'known' && m !== 'known') return;
+    if (perfFilter === 'weak' && m !== 'weak' && m !== 'mid') return;
+    if (perfFilter === 'unseen' && m !== 'unseen') return;
+
+    const acc = r && r.attempts ? Math.round(r.correct/r.attempts*100) : null;
+    const avgMs = r && r.responseTimes && r.responseTimes.length ? Math.round(r.responseTimes.reduce((a,b)=>a+b,0)/r.responseTimes.length) : null;
+    const accClass = acc===null?'':acc>=80?'high':acc>=50?'mid':'low';
+    const speedLabel = avgMs===null?'–':avgMs<3000?'⚡ Fast':avgMs<7000?'Normal':'Slow';
+    const speedColor = avgMs===null?'var(--textm)':avgMs<3000?'var(--purple)':avgMs<7000?'var(--green)':'var(--textd)';
+    const lastSeen = r && r.lastSeen ? timeAgo(r.lastSeen) : 'Never';
+    const safeHeb = w.heb.replace(/'/g,"\\'");
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="pt-heb">${w.heb}</td>
+      <td class="pt-en">${w.en}</td>
+      <td class="pt-ph">${w.ph}</td>
+      <td class="pt-acc ${accClass}">${acc !== null ? acc+'%' : '–'}</td>
+      <td class="pt-speed" style="color:${speedColor}">${speedLabel}</td>
+      <td class="pt-attempts">${r ? r.attempts : 0}</td>
+      <td class="pt-last">${lastSeen}</td>
+      <td class="pt-spk"><button class="spk" onclick="speakHeb('${safeHeb}',this)">🔊</button></td>`;
+    tbody.appendChild(tr);
+    count++;
+  })));
+
+  const empty = document.getElementById('perf-empty');
+  if (count === 0) {
+    empty.classList.remove('hidden');
+    empty.textContent = perfFilter === 'unseen' ? 'No unseen words — you\'ve studied everything!' : 'No words in this category yet. Complete some lessons first.';
+  } else {
+    empty.classList.add('hidden');
+  }
+}
+
+function timeAgo(ts) {
+  const diff = Date.now() - ts;
+  if (diff < 60000) return 'Just now';
+  if (diff < 3600000) return Math.round(diff/60000) + 'm ago';
+  if (diff < 86400000) return Math.round(diff/3600000) + 'h ago';
+  return Math.round(diff/86400000) + 'd ago';
+}
+
+// ══════════════════════════════════════════════
+// ALPHABET MODAL
+// ══════════════════════════════════════════════
+function openAleph() {
+  const modal = document.getElementById('aleph-modal');
+  modal.classList.add('open');
+  if (!document.getElementById('aleph-grid').children.length) buildAlephGrid();
+}
+function closeAleph() { document.getElementById('aleph-modal').classList.remove('open'); }
+
+function buildAlephGrid() {
+  const grid = document.getElementById('aleph-grid');
+  grid.innerHTML = '';
+  ALPHABET.forEach((a,i) => {
+    const cell = document.createElement('div');
+    cell.className = 'aleph-cell';
+    cell.innerHTML = `<span class="aleph-char">${a.l}</span><div class="aleph-name">${a.n}</div>`;
+    cell.onclick = () => {
+      document.querySelectorAll('.aleph-cell').forEach(c => c.classList.remove('sel'));
+      cell.classList.add('sel');
+      const det = document.getElementById('aleph-detail');
+      det.innerHTML = `<div class="ad-char">${a.l}</div><div class="ad-name">${a.n}</div><div class="ad-sound" style="font-family:'JetBrains Mono',monospace;color:var(--blue);font-size:13px;margin-bottom:8px">Sound: ${a.s}</div><div class="ad-desc">${a.d}</div>`;
+      det.classList.add('open');
+      speakHeb(a.l);
+    };
+    grid.appendChild(cell);
+  });
+}
+
+// ══════════════════════════════════════════════
+// PRACTICE HUB
+// ══════════════════════════════════════════════
+
+let qfMinutes = 5; // default quick-fire time
+let selectedCats = new Set(); // for cat-mix mode
+
+// Practice session state (separate from lesson state)
+let psMode = ''; // 'blitz' | 'weak' | 'quickfire' | 'catmix'
+let psDeck = []; // [{w, ci, li, wi}]
+let psQuizWords = [];
+let psTimerEnd = 0;
+let psTimerInterval = null;
+let psCountdownInterval = null;
+
+// PS flashcard state
+let psFCDeck = [];
+let psFCIdx = 0;
+let psFCShowing = 'front';
+let psFCGoodCount = 0, psFCAgainCount = 0, psFCFastCount = 0;
+let psFCCardStart = 0, psFCFlipTime = 0;
+let psCurrentCard = null;
+
+// PS quiz state
+let psQuizItems = [];
+let psQuizIdx = 0;
+let psQuizGood = 0, psQuizBad = 0, psQuizFast = 0;
+let psQuizStreak = 0;
+let psQuizWeakWords = [];
+let psQuizStartTime = 0;
+let psQuizTimer = null;
+const PS_QUIZ_TIME = 12000;
+
+function showPracticeHub() {
+  loadData();
+  showScreen('practice-screen');
+  renderPracticeHub();
+}
+
+function renderPracticeHub() {
+  // Blitz pill: count all seen words
+  const allSeen = [];
+  CURRICULUM.forEach((cat,ci) => cat.lessons.forEach((les,li) => les.words.forEach((w,wi) => {
+    const r = WR[wkey(ci,li,wi)];
+    if (r && r.attempts > 0) allSeen.push({w,ci,li,wi});
+  })));
+  document.getElementById('blitz-pill').textContent = allSeen.length + ' words available';
+
+  // Weak pill
+  const weakWords = getAllWeakWords();
+  document.getElementById('weak-pill').textContent = weakWords.length + ' words to drill';
+
+  // Cat filter buttons
+  const grid = document.getElementById('cat-filter-grid');
+  grid.innerHTML = '';
+  CURRICULUM.forEach((cat, ci) => {
+    const totalWords = cat.lessons.reduce((n,l)=>n+l.words.length,0);
+    const seenWords = cat.lessons.reduce((n,les,li) =>
+      n + les.words.filter((_,wi) => { const r=WR[wkey(ci,li,wi)]; return r&&r.attempts>0; }).length, 0);
+    const btn = document.createElement('button');
+    btn.className = 'cf-btn' + (selectedCats.has(ci) ? ' sel' : '');
+    btn.innerHTML = `${cat.icon} ${cat.title} <span style="color:var(--textm);font-size:11px">(${seenWords}/${totalWords})</span>`;
+    btn.onclick = () => toggleCatFilter(ci, btn);
+    grid.appendChild(btn);
+  });
+  updateCatMixPills();
+}
+
+function getAllWeakWords() {
+  const out = [];
+  CURRICULUM.forEach((cat,ci) => cat.lessons.forEach((les,li) => les.words.forEach((w,wi) => {
+    const r = WR[wkey(ci,li,wi)];
+    if (!r || r.attempts === 0) return;
+    const m = masteryLevel(r);
+    if (m === 'weak' || m === 'mid') out.push({w,ci,li,wi,r});
+  })));
+  // Sort by worst accuracy first
+  return out.sort((a,b) => {
+    const accA = a.r.attempts ? a.r.correct/a.r.attempts : 0;
+    const accB = b.r.attempts ? b.r.correct/b.r.attempts : 0;
+    return accA - accB;
+  });
+}
+
+function selectQFTime(mins, btn) {
+  qfMinutes = mins;
+  document.querySelectorAll('.qf-t').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function toggleCatFilter(ci, btn) {
+  if (selectedCats.has(ci)) {
+    selectedCats.delete(ci);
+    btn.classList.remove('sel');
+  } else {
+    selectedCats.add(ci);
+    btn.classList.add('sel');
+  }
+  updateCatMixPills();
+}
+
+function updateCatMixPills() {
+  const n = selectedCats.size;
+  let wordCount = 0;
+  selectedCats.forEach(ci => {
+    CURRICULUM[ci].lessons.forEach((les,li) => les.words.forEach((_,wi) => {
+      const r = WR[wkey(ci,li,wi)];
+      if (r && r.attempts > 0) wordCount++;
+    }));
+  });
+  // include unseen words too — allow all words from selected cats
+  if (wordCount === 0) {
+    selectedCats.forEach(ci => {
+      CURRICULUM[ci].lessons.forEach(les => wordCount += les.words.length);
+    });
+  }
+  document.getElementById('catmix-pill').textContent = n + ' categor' + (n===1?'y':'ies') + ' selected';
+  document.getElementById('catmix-count-pill').textContent = wordCount + ' words';
+  const startBtn = document.getElementById('catmix-start-btn');
+  startBtn.disabled = n === 0;
+  startBtn.style.opacity = n === 0 ? '.4' : '1';
+  startBtn.textContent = n === 0 ? 'Select Categories →' : `Start Mix (${wordCount} words) →`;
+}
+
+// ── LAUNCH MODES ──
+
+function startBlitz() {
+  // All words that have been seen at least once, prioritized by weakness
+  const deck = [];
+  CURRICULUM.forEach((cat,ci) => cat.lessons.forEach((les,li) => les.words.forEach((w,wi) => {
+    const r = WR[wkey(ci,li,wi)];
+    if (r && r.attempts > 0) deck.push({w,ci,li,wi});
+  })));
+  if (deck.length === 0) {
+    alert('Complete at least one lesson first to use Full Blitz!');
+    return;
+  }
+  launchPracticeSession('blitz', '🌪️ Full Blitz', deck, 0);
+}
+
+function startWeakSpots() {
+  const deck = getAllWeakWords();
+  if (deck.length === 0) {
+    alert('No weak spots found yet — keep practicing lessons and weak words will appear here!');
+    return;
+  }
+  launchPracticeSession('weak', '🎯 Weak Spots', deck, 0);
+}
+
+function startQuickFire() {
+  // All seen words, fully random
+  const deck = [];
+  CURRICULUM.forEach((cat,ci) => cat.lessons.forEach((les,li) => les.words.forEach((w,wi) => {
+    const r = WR[wkey(ci,li,wi)];
+    if (r && r.attempts > 0) deck.push({w,ci,li,wi});
+  })));
+  if (deck.length === 0) {
+    // Allow unseen words too for quick-fire
+    CURRICULUM.forEach((cat,ci) => cat.lessons.forEach((les,li) => les.words.forEach((w,wi) => {
+      deck.push({w,ci,li,wi});
+    })));
+  }
+  if (deck.length === 0) { alert('Nothing to practice yet!'); return; }
+  const label = qfMinutes === 0 ? '⚡ Quick Fire · No Limit' : `⚡ Quick Fire · ${qfMinutes} min`;
+  launchPracticeSession('quickfire', label, deck, qfMinutes * 60);
+}
+
+function startCatMix() {
+  if (selectedCats.size === 0) return;
+  const deck = [];
+  selectedCats.forEach(ci => {
+    CURRICULUM[ci].lessons.forEach((les,li) => les.words.forEach((w,wi) => {
+      deck.push({w,ci,li,wi});
+    }));
+  });
+  const catNames = [...selectedCats].map(ci => CURRICULUM[ci].title).join(' + ');
+  launchPracticeSession('catmix', '🔀 ' + catNames, deck, 0);
+}
+
+function launchPracticeSession(mode, title, deck, timeLimitSecs) {
+  psMode = mode;
+  psDeck = [...deck].sort(() => Math.random() - 0.5);
+  showScreen('practice-session-screen');
+  document.getElementById('complete-overlay').classList.remove('show');
+
+  document.getElementById('ps-mode-label').textContent = 'Practice Hub › ' + mode.toUpperCase();
+  document.getElementById('ps-title').textContent = title;
+
+  // Reset tabs
+  document.querySelectorAll('.ps-tab').forEach(t => t.classList.remove('active','tab-done'));
+  document.getElementById('ps-tab-flash').classList.add('active');
+  document.querySelectorAll('#ps-pane-flash,#ps-pane-quiz,#ps-pane-complete').forEach(p => p.classList.remove('active'));
+  document.getElementById('ps-pane-flash').classList.add('active');
+
+  // Timer
+  clearInterval(psCountdownInterval);
+  if (timeLimitSecs > 0) {
+    psTimerEnd = Date.now() + timeLimitSecs * 1000;
+    updatePSTimer();
+    psCountdownInterval = setInterval(updatePSTimer, 1000);
+    document.getElementById('ps-timer').textContent = formatTime(timeLimitSecs);
+  } else {
+    psTimerEnd = 0;
+    document.getElementById('ps-timer').textContent = '';
+  }
+
+  // Build flashcard deck
+  buildPSFlash();
+}
+
+function updatePSTimer() {
+  if (psTimerEnd === 0) return;
+  const rem = Math.max(0, Math.round((psTimerEnd - Date.now()) / 1000));
+  const el = document.getElementById('ps-timer');
+  el.textContent = formatTime(rem);
+  el.className = 'ps-timer' + (rem <= 30 ? ' urgent' : '');
+  if (rem <= 0) {
+    clearInterval(psCountdownInterval);
+    // Auto-advance to complete if timer runs out
+    showPSComplete();
+  }
+}
+
+function formatTime(secs) {
+  const m = Math.floor(secs / 60);
+  const s = secs % 60;
+  return `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+function psGoPhase(phase, tabEl) {
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.ps-tab').forEach(t => { if(!t.classList.contains('tab-done')) t.classList.remove('active'); });
+  tabEl.classList.add('active');
+  document.querySelectorAll('#ps-pane-flash,#ps-pane-quiz,#ps-pane-complete').forEach(p => p.classList.remove('active'));
+  if (phase === 'flash') { document.getElementById('ps-pane-flash').classList.add('active'); buildPSFlash(); }
+  else if (phase === 'quiz') { document.getElementById('ps-pane-quiz').classList.add('active'); buildPSQuiz(); }
+}
+
+// ── PS FLASHCARDS ──
+
+function buildPSFlash() {
+  // Prioritize weak/mid, shuffle rest
+  const withMastery = psDeck.map(item => ({
+    ...item, m: masteryLevel(WR[wkey(item.ci,item.li,item.wi)])
+  }));
+  const weak = withMastery.filter(x => x.m==='weak'||x.m==='mid'||x.m==='unseen');
+  const rest = withMastery.filter(x => x.m==='known'||x.m==='mastered');
+  psFCDeck = [...weak.sort(()=>Math.random()-.5), ...rest.sort(()=>Math.random()-.5)];
+  psFCIdx = 0; psFCGoodCount = 0; psFCAgainCount = 0; psFCFastCount = 0;
+  psFCShowing = 'front';
+  loadPSFCCard();
+}
+
+function loadPSFCCard() {
+  if (psFCIdx >= psFCDeck.length) {
+    // Offer to move to quiz
+    document.getElementById('ps-fc-en').textContent = '🎉 All flashcards done!';
+    document.getElementById('ps-fc-heb').textContent = '';
+    document.getElementById('ps-fc-ph').textContent = '';
+    document.getElementById('ps-fc-note').textContent = '';
+    document.getElementById('ps-fc-scene').className = 'fc-card-scene show-front';
+    document.getElementById('ps-fc-btn-row').innerHTML = '<button class="btn btn-primary" onclick="psGoPhase(\'quiz\',document.getElementById(\'ps-tab-quiz\'))">Take the Quiz →</button>';
+    document.getElementById('ps-fc-grade-row').classList.add('hidden');
+    document.getElementById('ps-fc-hint').textContent = 'Flashcards complete!';
+    updatePSFCStats();
+    return;
+  }
+  const item = psFCDeck[psFCIdx];
+  psCurrentCard = item.w;
+  psFCShowing = 'front';
+  psFCCardStart = Date.now();
+  psFCFlipTime = 0;
+
+  document.getElementById('ps-fc-en').textContent = item.w.en;
+  document.getElementById('ps-fc-heb').textContent = item.w.heb;
+  document.getElementById('ps-fc-ph').textContent = item.w.ph;
+  document.getElementById('ps-fc-note').textContent = item.w.note || '';
+  document.getElementById('ps-fc-spk').classList.remove('playing');
+  document.getElementById('ps-fc-scene').className = 'fc-card-scene show-front';
+  document.getElementById('ps-fc-btn-row').classList.remove('hidden');
+  document.getElementById('ps-fc-grade-row').classList.add('hidden');
+  document.getElementById('ps-fc-hint').textContent = 'Tap card or "Flip Card" to see Hebrew';
+  document.getElementById('ps-fc-prev').disabled = psFCIdx === 0;
+  document.getElementById('ps-fc-speed').textContent = '';
+  updatePSFCStats();
+}
+
+function updatePSFCStats() {
+  document.getElementById('ps-fc-good').textContent = psFCGoodCount;
+  document.getElementById('ps-fc-again').textContent = psFCAgainCount;
+  document.getElementById('ps-fc-left').textContent = Math.max(0, psFCDeck.length - psFCIdx);
+  document.getElementById('ps-fc-fast').textContent = psFCFastCount;
+  const prog = psFCDeck.length ? Math.round(psFCIdx/psFCDeck.length*100) : 0;
+  document.getElementById('ps-fc-prog').style.width = prog + '%';
+  document.getElementById('ps-fc-label').textContent = `Card ${Math.min(psFCIdx+1,psFCDeck.length)} of ${psFCDeck.length}`;
+}
+
+function psFCHandleClick() {
+  if (psFCShowing === 'front') psFCFlip();
+  else psFCFlipBack();
+}
+
+function psFCFlip() {
+  if (psFCIdx >= psFCDeck.length) return;
+  psFCShowing = 'back';
+  psFCFlipTime = Date.now();
+  document.getElementById('ps-fc-scene').className = 'fc-card-scene show-back';
+  document.getElementById('ps-fc-btn-row').classList.add('hidden');
+  document.getElementById('ps-fc-grade-row').classList.remove('hidden');
+  document.getElementById('ps-fc-hint').textContent = 'Tap card again to flip back · Rate yourself';
+  setTimeout(() => speakHeb(psCurrentCard ? psCurrentCard.heb : '', document.getElementById('ps-fc-spk')), 320);
+  const elapsed = Date.now() - psFCCardStart;
+  const sc = elapsed < 3000 ? 'speed-fast' : elapsed < 8000 ? 'speed-normal' : 'speed-slow';
+  const sl = elapsed < 3000 ? '⚡ Fast' : elapsed < 8000 ? 'Normal pace' : 'Take your time';
+  document.getElementById('ps-fc-speed').innerHTML = `<span class="speed-badge ${sc}">${sl}</span>`;
+}
+
+function psFCFlipBack() {
+  psFCShowing = 'front';
+  document.getElementById('ps-fc-scene').className = 'fc-card-scene show-front';
+  document.getElementById('ps-fc-btn-row').classList.remove('hidden');
+  document.getElementById('ps-fc-grade-row').classList.add('hidden');
+  document.getElementById('ps-fc-hint').textContent = 'Tap card or "Flip Card" to see Hebrew';
+  window.speechSynthesis.cancel();
+}
+
+function psFCSkip() {
+  psFCIdx++;
+  loadPSFCCard();
+}
+
+function psFCPrev() {
+  if (psFCIdx <= 0) return;
+  psFCIdx--;
+  loadPSFCCard();
+}
+
+function psFCGrade(grade) {
+  if (psFCIdx >= psFCDeck.length) return;
+  const item = psFCDeck[psFCIdx];
+  const totalMs = Date.now() - psFCCardStart;
+  const isCorrect = grade !== 'again';
+  const isFast = totalMs < 3500 && isCorrect;
+  if (isCorrect) psFCGoodCount++;
+  else psFCAgainCount++;
+  if (isFast) psFCFastCount++;
+  recordAnswer(item.ci, item.li, item.wi, isCorrect, totalMs, grade);
+  psFCIdx++;
+  loadPSFCCard();
+}
+
+// ── PS QUIZ ──
+
+function buildPSQuiz() {
+  psQuizItems = [...psDeck].sort(() => Math.random() - 0.5);
+  psQuizIdx = 0; psQuizGood = 0; psQuizBad = 0; psQuizFast = 0;
+  psQuizStreak = 0; psQuizWeakWords = [];
+  renderPSQuiz();
+}
+
+function renderPSQuiz() {
+  clearTimeout(psQuizTimer);
+  if (psTimerEnd > 0 && Date.now() >= psTimerEnd) { showPSComplete(); return; }
+  if (psQuizIdx >= psQuizItems.length) {
+    // Reshuffle and continue (endless mode) or complete
+    if (psTimerEnd > 0) {
+      // Reshuffle and keep going while timer runs
+      psQuizItems = [...psDeck].sort(() => Math.random() - 0.5);
+      psQuizIdx = 0;
+    } else {
+      showPSComplete(); return;
+    }
+  }
+
+  const correct = psQuizItems[psQuizIdx];
+  psQuizStartTime = Date.now();
+
+  const showHeb = Math.random() > 0.4;
+  const allWords = CURRICULUM.flatMap((c,ci) => c.lessons.flatMap((l,li) => l.words.map((w,wi) => w)));
+  const pool = allWords.filter(w => w !== correct.w).sort(()=>Math.random()-.5).slice(0,3);
+  const answers = [correct.w, ...pool].sort(() => Math.random() - 0.5);
+
+  document.getElementById('ps-q-num').textContent = `Question ${psQuizIdx+1} of ${psQuizItems.length}`;
+  document.getElementById('ps-q-streak').innerHTML = psQuizStreak >= 2 ? `🔥 ${psQuizStreak}` : '';
+
+  const dirEl = document.getElementById('ps-q-dir');
+  const wordEl = document.getElementById('ps-q-word');
+  const spkBtn = document.getElementById('ps-q-spk');
+
+  if (showHeb) {
+    dirEl.textContent = 'What does this mean in English?';
+    wordEl.innerHTML = `<div class="quiz-word-heb">${correct.w.heb}</div>`;
+    spkBtn.style.display = 'inline-flex';
+    spkBtn.onclick = () => speakHeb(correct.w.heb, spkBtn);
+    setTimeout(() => speakHeb(correct.w.heb, null), 200);
+  } else {
+    dirEl.textContent = 'Choose the Hebrew translation:';
+    wordEl.innerHTML = `<div class="quiz-word-en">${correct.w.en}</div>`;
+    spkBtn.style.display = 'none';
+  }
+
+  const opts = document.getElementById('ps-q-opts');
+  opts.innerHTML = '';
+  answers.forEach(a => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = showHeb ? a.en : (a.heb + ' · ' + a.ph);
+    btn.onclick = () => handlePSQuizAnswer(a, correct, btn, showHeb);
+    opts.appendChild(btn);
+  });
+
+  document.getElementById('ps-q-fb').className = 'quiz-fb';
+  document.getElementById('ps-q-fb').innerHTML = '';
+  document.getElementById('ps-q-next').style.display = 'none';
+
+  // Timer bar
+  const fill = document.getElementById('ps-q-timer');
+  fill.style.transition = 'none';
+  fill.style.width = '100%';
+  requestAnimationFrame(() => {
+    fill.style.transition = `width ${PS_QUIZ_TIME}ms linear`;
+    fill.style.width = '0%';
+  });
+  psQuizTimer = setTimeout(() => handlePSQuizAnswer(null, correct, null, showHeb), PS_QUIZ_TIME);
+}
+
+function handlePSQuizAnswer(chosen, correct, btn, showHeb) {
+  clearTimeout(psQuizTimer);
+  const responseMs = Date.now() - psQuizStartTime;
+  const isCorrect = chosen === correct.w;
+  const isFast = responseMs < 3500 && isCorrect;
+
+  document.querySelectorAll('#ps-q-opts .quiz-opt').forEach(b => b.disabled = true);
+  document.querySelectorAll('#ps-q-opts .quiz-opt').forEach(b => {
+    const match = showHeb ? b.textContent === correct.w.en : b.textContent === (correct.w.heb + ' · ' + correct.w.ph);
+    if (match) b.classList.add('correct');
+  });
+  if (btn && !isCorrect) btn.classList.add('wrong');
+
+  const fb = document.getElementById('ps-q-fb');
+  if (isCorrect) {
+    psQuizGood++;
+    psQuizStreak++;
+    if (isFast) psQuizFast++;
+    fb.className = 'quiz-fb show good';
+    fb.innerHTML = `✓ Correct!${isFast?' ⚡':''} &nbsp; <em>${correct.w.ph}</em> — ${correct.w.en} &nbsp; <button class="spk" onclick="speakHeb('${correct.w.heb.replace(/'/g,"\\'")}',this)">🔊</button>`;
+  } else {
+    psQuizBad++;
+    psQuizStreak = 0;
+    psQuizWeakWords.push(correct.w);
+    fb.className = 'quiz-fb show bad';
+    const why = !chosen ? '⏱ Time\'s up!' : '✕ Not quite.';
+    fb.innerHTML = `${why} &nbsp; <strong>${correct.w.heb}</strong> &nbsp; <em>${correct.w.ph}</em> — "${correct.w.en}" &nbsp; <button class="spk" onclick="speakHeb('${correct.w.heb.replace(/'/g,"\\'")}',this)">🔊</button>`;
+  }
+
+  recordAnswer(correct.ci, correct.li, correct.wi, isCorrect, responseMs, isCorrect ? (isFast?'easy':'good') : 'again');
+
+  document.getElementById('ps-q-next').style.display = 'block';
+  psQuizIdx++;
+}
+
+function psNextQuiz() { renderPSQuiz(); }
+
+// ── PS COMPLETE ──
+
+function showPSComplete() {
+  clearInterval(psCountdownInterval);
+  clearTimeout(psQuizTimer);
+  window.speechSynthesis.cancel();
+
+  document.querySelectorAll('.ps-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#ps-pane-flash,#ps-pane-quiz').forEach(p => p.classList.remove('active'));
+  document.getElementById('ps-pane-complete').classList.add('active');
+
+  const total = psQuizGood + psQuizBad;
+  const pct = total ? Math.round(psQuizGood/total*100) : (psFCGoodCount > 0 ? Math.round(psFCGoodCount/(psFCGoodCount+psFCAgainCount)*100) : 0);
+
+  const modeLabels = { blitz:'🌪️ Full Blitz', weak:'🎯 Weak Spots', quickfire:'⚡ Quick Fire', catmix:'🔀 Category Mix' };
+  document.getElementById('sc-mode-badge').textContent = modeLabels[psMode] || 'Practice';
+
+  let trophy='🌟', title='Session Complete!', sub='';
+  if (pct >= 95) { trophy='🏆'; title='Outstanding!'; sub='Near-perfect across the board. Your Hebrew is coming together beautifully.'; }
+  else if (pct >= 80) { trophy='🌟'; title='Great Session!'; sub='Strong performance. A few words flagged below — they\'ll come back in future sessions.'; }
+  else if (pct >= 60) { trophy='📈'; title='Good Progress!'; sub='Solid effort. The weak words below are being tracked — keep drilling them.'; }
+  else { trophy='💪'; title='Keep Going!'; sub='Struggle is how you learn. Every wrong answer feeds the spaced repetition engine.'; }
+
+  if (psMode === 'quickfire' && psTimerEnd > 0) {
+    sub = `Time's up! You answered ${total} questions. ` + sub;
+  }
+
+  document.getElementById('sc-trophy').textContent = trophy;
+  document.getElementById('sc-title').textContent = title;
+  document.getElementById('sc-sub').textContent = sub;
+  document.getElementById('sc-correct').textContent = psQuizGood;
+  document.getElementById('sc-missed').textContent = psQuizBad;
+  document.getElementById('sc-fast').textContent = psQuizFast;
+  document.getElementById('sc-words').textContent = psDeck.length;
+
+  // Weak word chips
+  const chips = document.getElementById('sc-weak-chips');
+  chips.innerHTML = '';
+  const unique = [...new Set(psQuizWeakWords.map(w=>w.heb))].map(h => psQuizWeakWords.find(w=>w.heb===h));
+  const titleEl = document.getElementById('sc-weak-title');
+  if (unique.length > 0) {
+    titleEl.style.display = 'block';
+    unique.slice(0,12).forEach(w => {
+      const chip = document.createElement('div');
+      chip.className = 'sc-chip';
+      const safe = w.heb.replace(/'/g,"\\'");
+      chip.innerHTML = `<span class="sc-chip-heb">${w.heb}</span><span>${w.en}</span><button class="spk" onclick="event.stopPropagation();speakHeb('${safe}',this)">🔊</button>`;
+      chips.appendChild(chip);
+    });
+  } else {
+    titleEl.style.display = 'none';
+  }
+}
+
+function psRetry() {
+  // Relaunch same mode with same deck
+  clearInterval(psCountdownInterval);
+  const title = document.getElementById('ps-title').textContent;
+  const timeLimitSecs = psTimerEnd > 0 ? Math.round((psTimerEnd - Date.now() + (Date.now() - psTimerEnd)) / 1000) : 0;
+  // Recalculate time from mode
+  let tls = 0;
+  if (psMode === 'quickfire') tls = qfMinutes * 60;
+  launchPracticeSession(psMode, title, psDeck, tls);
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+loadData();
+showHome();
+</script>
+</body>
+</html>
